@@ -25,9 +25,7 @@ function TakeBackRing() {
         <div className="absolute left-1/2 top-[10.5%] h-4 w-4 -translate-x-1/2 rounded-full border-4 border-[#F5F3EF] bg-[#1E3A2B] shadow-md" />
       </motion.div>
       <div className="absolute inset-0 m-auto flex h-24 w-24 items-center justify-center rounded-3xl border border-[#121212]/10 bg-white shadow-xl md:h-28 md:w-28">
-        <svg viewBox="0 0 24 24" className="h-10 w-10 text-[#1E3A2B]" fill="none" stroke="currentColor" strokeWidth="1.4">
-          <path d="M8.5 3 4 6l2 3 1.5-1v12h9V8L18 9l2-3-4.5-3a3.5 3.5 0 0 1-7 0Z" strokeLinejoin="round" />
-        </svg>
+        <img src="/logo.png" alt="REVAMPED" className="h-16 w-16 object-contain md:h-20 md:w-20" />
       </div>
       {[
         { label: "01 BRING IT", cls: "left-1/2 top-0 -translate-x-1/2 -translate-y-1/2" },

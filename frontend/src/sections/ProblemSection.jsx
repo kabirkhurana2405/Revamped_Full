@@ -71,8 +71,13 @@ export default function ProblemSection() {
           </Reveal>
         </div>
 
-        <div className="mt-32 md:mt-44">
-          <h3 className="text-center font-display font-bold uppercase leading-[1.02] tracking-tight">
+        <div className="relative mt-32 md:mt-44">
+          <img
+            src="/logo.png"
+            alt=""
+            className="pointer-events-none absolute left-1/2 top-1/2 w-[300px] -translate-x-1/2 -translate-y-1/2 opacity-[0.05] md:w-[440px]"
+          />
+          <h3 className="relative text-center font-display font-bold uppercase leading-[1.02] tracking-tight">
             <MaskedLines
               lines={["THE END OF YOUR USE", "DOESN'T HAVE TO BE"]}
               lineClass="text-[clamp(1.8rem,4.5vw,4rem)] text-[#F5F3EF]/90"

@@ -31,6 +31,9 @@ export default function DropSection({ onAccess, onGetApp }) {
     <section id="drop" data-testid="drop-section" className="relative bg-[#F5F3EF] py-28 md:py-40">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="text-center">
+          <Reveal className="mb-7 flex justify-center">
+            <img src="/logo.png" alt="REVAMPED" className="w-14 object-contain md:w-16" />
+          </Reveal>
           <Chapter num="08" label="DROP 001" />
           <h2 className="mt-6 font-display font-extrabold uppercase leading-[0.9] tracking-tight">
             <MaskedLines

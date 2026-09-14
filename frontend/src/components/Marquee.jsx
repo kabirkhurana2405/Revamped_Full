@@ -21,7 +21,7 @@ export default function Marquee() {
             >
               {t}
             </span>
-            <span className="h-2 w-2 rounded-full bg-[#1E3A2B]" />
+            <img src="/logo.png" alt="" className="h-7 w-7 object-contain md:h-9 md:w-9" />
           </span>
         ))}
       </div>

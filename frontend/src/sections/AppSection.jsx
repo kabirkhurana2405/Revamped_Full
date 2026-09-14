@@ -85,7 +85,7 @@ const BringScreen = () => (
       ))}
     </div>
     <div className="mt-4 space-y-2">
-      {["OVERSIZED TEE", "HOODIE"].map((g) => (
+      {["SHIRT", "HOODIE"].map((g) => (
         <div key={g} className="flex items-center justify-between rounded-xl border border-[#121212]/10 px-3 py-2.5">
           <span className="font-mono2 text-[8px] tracking-[0.2em] text-[#121212]/70">{g}</span>
           <span className="font-mono2 text-[7px] tracking-[0.2em] text-[#1E3A2B]">ADDED</span>
@@ -167,7 +167,7 @@ const ImpactScreen = () => (
 const JourneyScreen = () => (
   <ScreenShell nav={3}>
     <p className="font-mono2 text-[8px] tracking-[0.3em] text-[#1E3A2B]">GARMENT JOURNEY</p>
-    <p className="mt-2 font-display text-lg font-extrabold text-[#121212]">OVERSIZED TEE &mdash; BONE</p>
+    <p className="mt-2 font-display text-lg font-extrabold text-[#121212]">OVERSIZED SHIRT &mdash; BONE</p>
     <div className="mt-5">
       {["YOU CONTRIBUTED IT", "AI CONDITION CHECK", "SORTED", "NEW LIFE", "IMPACT RECORDED"].map((step, i) => (
         <div key={step} className="flex gap-3">

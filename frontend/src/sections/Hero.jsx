@@ -86,11 +86,12 @@ export default function Hero({ onExplore, onGetApp }) {
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between px-5 pb-8 pt-24 md:px-10 md:pb-10">
         <div className="mt-[6vh] md:mt-[10vh]">
           <motion.p
-            className="mb-5 font-mono2 text-[10px] tracking-[0.4em] text-[#1E3A2B] md:text-[11px]"
+            className="mb-5 flex items-center gap-2.5 font-mono2 text-[10px] tracking-[0.4em] text-[#1E3A2B] md:text-[11px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
+            <img src="/logo.png" alt="" className="h-4 w-4 object-contain" />
             CIRCULAR STREETWEAR &mdash; INDIA
           </motion.p>
           <h1 data-testid="hero-headline" className="font-display font-extrabold uppercase leading-[0.88] tracking-tight">
