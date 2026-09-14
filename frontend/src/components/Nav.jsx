@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Logo from "./Logo";
 
 const LINKS = [
   ["STYLE", "#style"],
@@ -33,9 +34,9 @@ export default function Nav({ onNavigate, onGetApp }) {
             data-testid="nav-logo"
             data-cursor="hover"
             onClick={() => go("#hero")}
-            className="font-display text-lg font-extrabold tracking-[0.18em] text-[#121212]"
+            className="text-[#121212]"
           >
-            REVAMPED
+            <Logo />
           </button>
           <nav className="hidden items-center gap-8 md:flex">
             {LINKS.map(([label, id]) => (
@@ -82,7 +83,9 @@ export default function Nav({ onNavigate, onGetApp }) {
             exit={{ opacity: 0 }}
           >
             <div className="flex items-center justify-between">
-              <span className="font-display text-lg font-extrabold tracking-[0.18em] text-[#F5F3EF]">REVAMPED</span>
+              <span className="text-[#F5F3EF]">
+                <Logo />
+              </span>
               <button data-testid="mobile-menu-close" aria-label="Close menu" onClick={() => setOpen(false)} className="text-[#F5F3EF]">
                 <X size={26} />
               </button>

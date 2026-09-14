@@ -34,6 +34,7 @@ Single-page premium launch site for REVAMPED, an Indian circular streetwear bran
 - Impact: new headline "STYLE IS WHAT YOU WEAR..." + lightweight animated flow (Closet → Contribute → AI Check → 3 paths → New Life → Impact); ledger/50 counter/dots/DEMO dashboard retained
 - Three Paths cards updated with condition-based copy
 - Chapter numbering resequenced 01–09
+2026-09-14 — v3 (brand mark): circular-loop "R" symbol (SVG, components/Logo.jsx: LogoMark + Logo lockup) added alongside existing Syne wordmark; placed in nav, mobile menu, footer, app screen headers, waitlist modal, email header (table-safe ring span), favicon (public/logo-mark.svg). Awaiting user's own logo file for refinement/swap.
 
 ## Verified
 - curl POST /api/waitlist → {"status":"joined","email_sent":true}; duplicate → "already"; count endpoint works

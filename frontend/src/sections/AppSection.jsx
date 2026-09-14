@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent, useMotionTemplate, AnimatePresence } from "framer-motion";
 import { Chapter, MaskedLines, Reveal, PillButton } from "../components/primitives";
+import { LogoMark } from "../components/Logo";
 import TeeSvg from "../components/TeeSvg";
 
 const WORDS = ["DISCOVER", "BRING", "SCAN", "TRACK", "FOLLOW", "REWARD"];
@@ -8,7 +9,10 @@ const WORDS = ["DISCOVER", "BRING", "SCAN", "TRACK", "FOLLOW", "REWARD"];
 const ScreenShell = ({ nav = 0, children }) => (
   <div className="flex h-full flex-col bg-[#F5F3EF] text-left">
     <div className="flex items-center justify-between px-5 pt-6">
-      <span className="font-display text-[10px] font-extrabold tracking-[0.22em] text-[#121212]">REVAMPED</span>
+      <span className="flex items-center gap-1.5 text-[#121212]">
+        <LogoMark size={14} />
+        <span className="font-display text-[10px] font-extrabold tracking-[0.22em]">REVAMPED</span>
+      </span>
       <span className="h-1.5 w-6 rounded-full bg-[#121212]/15" />
     </div>
     <div className="flex-1 overflow-hidden px-5 pb-2 pt-4">{children}</div>

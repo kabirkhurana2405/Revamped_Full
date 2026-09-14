@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Check } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
+import { LogoMark } from "./Logo";
 
 export default function WaitlistModal({ open, source, onClose }) {
   const [email, setEmail] = useState("");
@@ -64,7 +65,8 @@ export default function WaitlistModal({ open, source, onClose }) {
 
             {state !== "done" ? (
               <>
-                <p className="font-mono2 text-[10px] tracking-[0.35em] text-[#1E3A2B]">COMING SOON</p>
+                <LogoMark size={30} className="text-[#1E3A2B]" />
+                <p className="mt-4 font-mono2 text-[10px] tracking-[0.35em] text-[#1E3A2B]">COMING SOON</p>
                 <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-[#121212]">
                   Revamped is getting ready to launch.
                 </h3>
