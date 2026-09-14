@@ -244,11 +244,12 @@ function Phone({ progress, screenIdx }) {
   return (
     <div style={{ perspective: 1200 }}>
       <motion.div style={{ y: py }}>
-        <motion.div
-          data-testid="app-phone"
-          className="relative h-[520px] w-[252px] md:h-[600px] md:w-[292px]"
-          style={{ transform }}
-        >
+        <div className="origin-center scale-[0.84] md:scale-100">
+          <motion.div
+            data-testid="app-phone"
+            className="relative h-[520px] w-[252px] md:h-[600px] md:w-[292px]"
+            style={{ transform }}
+          >
           <div className="absolute inset-0 rounded-[2.6rem] border border-black/70 bg-[#0d0d0c] p-[9px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.75)]">
             <div className="relative h-full w-full overflow-hidden rounded-[2.1rem] bg-[#F5F3EF]">
               <div className="absolute left-1/2 top-2.5 z-20 h-5 w-20 -translate-x-1/2 rounded-full bg-[#0d0d0c]" />
@@ -271,7 +272,8 @@ function Phone({ progress, screenIdx }) {
           <div className="absolute -right-[2px] top-28 h-14 w-[3px] rounded-r bg-[#2e2e2c]" />
           <div className="absolute -left-[2px] top-24 h-8 w-[3px] rounded-l bg-[#2e2e2c]" />
           <div className="absolute -left-[2px] top-36 h-12 w-[3px] rounded-l bg-[#2e2e2c]" />
-        </motion.div>
+          </motion.div>
+        </div>
       </motion.div>
       <div className="mx-auto mt-8 h-6 w-2/3 rounded-[100%] bg-black/40 blur-xl" />
     </div>

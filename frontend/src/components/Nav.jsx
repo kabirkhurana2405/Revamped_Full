@@ -36,7 +36,7 @@ export default function Nav({ onNavigate, onGetApp }) {
             onClick={() => go("#hero")}
             className="text-[#121212]"
           >
-            <Logo />
+            <Logo markSize={22} wordmarkClass="text-sm md:text-lg" />
           </button>
           <nav className="hidden items-center gap-8 md:flex">
             {LINKS.map(([label, id]) => (
@@ -56,7 +56,7 @@ export default function Nav({ onNavigate, onGetApp }) {
               data-testid="nav-download-app-btn"
               data-cursor="hover"
               onClick={onGetApp}
-              className="rounded-full bg-[#121212] px-5 py-2.5 font-mono2 text-[10px] tracking-[0.25em] text-[#F5F3EF] transition-colors duration-300 hover:bg-[#1E3A2B]"
+              className="rounded-full bg-[#121212] px-3.5 py-2 font-mono2 text-[9px] tracking-[0.18em] text-[#F5F3EF] transition-colors duration-300 hover:bg-[#1E3A2B] md:px-5 md:py-2.5 md:text-[10px] md:tracking-[0.25em]"
             >
               GET THE APP
             </button>

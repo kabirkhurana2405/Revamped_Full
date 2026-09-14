@@ -35,6 +35,7 @@
     }
     html {
         scroll-behavior: auto;
+        overflow-x: clip;
     }
     body {
         background: #F5F3EF;

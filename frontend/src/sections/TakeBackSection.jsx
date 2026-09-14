@@ -151,7 +151,7 @@ function Calculator() {
 
 export default function TakeBackSection() {
   return (
-    <section id="cycle" data-testid="takeback-section" className="relative bg-[#F5F3EF] py-28 md:py-40">
+    <section id="cycle" data-testid="takeback-section" className="relative overflow-hidden bg-[#F5F3EF] py-28 md:py-40">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <Chapter num="04" label="THE TAKE-BACK" />
         <h2 className="mt-8 font-display font-extrabold uppercase leading-[0.9] tracking-tight">

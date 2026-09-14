@@ -41,7 +41,7 @@ export default function ProblemSection() {
     >
       <div className="pointer-events-none absolute inset-0">
         {CHIPS.map((c, i) => (
-          <div key={c.label} className="absolute" style={{ left: c.left, top: c.top }}>
+          <div key={c.label} className={`absolute ${i === 2 || i === 4 ? "hidden md:block" : ""}`} style={{ left: c.left, top: c.top }}>
             <GarmentChip chip={c} index={i} progress={scrollYProgress} />
           </div>
         ))}

@@ -26,9 +26,9 @@ function HeroTee({ mouse }) {
     const k = Math.min(1, dt * 3);
     g.rotation.y += (Math.sin(t * 0.25) * 0.24 + mouse.current.x * 0.3 - g.rotation.y) * k;
     g.rotation.x += (mouse.current.y * 0.12 - g.rotation.x) * k;
-    g.position.y = Math.sin(t * 0.7) * 0.07;
+    g.position.y = (mobile ? -0.95 : 0) + Math.sin(t * 0.7) * 0.07;
     const cam = state.camera;
-    cam.position.z += ((mobile ? 6.4 : 5.2) - cam.position.z) * k;
+    cam.position.z += ((mobile ? 7.0 : 5.2) - cam.position.z) * k;
     cam.position.x += (mouse.current.x * 0.25 - cam.position.x) * k;
     cam.position.y += (-mouse.current.y * 0.18 - cam.position.y) * k;
     cam.lookAt(mobile ? 0 : 0.55, 0, 0);
@@ -36,7 +36,7 @@ function HeroTee({ mouse }) {
 
   return (
     <group>
-      <group ref={group} position={[mobile ? 0 : 1.05, 0, 0]}>
+      <group ref={group} position={[mobile ? 0 : 1.05, 0, 0]} scale={mobile ? 0.78 : 1}>
         <mesh geometry={geo}>
           <meshStandardMaterial color="#E9E4D9" roughness={0.94} metalness={0} bumpMap={bump} bumpScale={0.5} />
         </mesh>
@@ -45,7 +45,7 @@ function HeroTee({ mouse }) {
           <meshBasicMaterial map={logoTex} transparent toneMapped={false} depthWrite={false} />
         </mesh>
       </group>
-      <ContactShadows position={[mobile ? 0 : 1.05, -1.75, 0]} opacity={0.3} scale={10} blur={2.6} far={3.6} color="#3a382f" frames={1} />
+      <ContactShadows position={[mobile ? 0 : 1.05, mobile ? -2.3 : -1.75, 0]} opacity={0.3} scale={10} blur={2.6} far={3.6} color="#3a382f" frames={1} />
     </group>
   );
 }
@@ -94,7 +94,8 @@ export default function Hero({ onExplore, onGetApp }) {
       )}
 
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between px-5 pb-8 pt-24 md:px-10 md:pb-10">
-        <div className="mt-[6vh] md:mt-[10vh]">
+        <div className="absolute inset-x-0 top-0 h-[64%] bg-gradient-to-b from-[#F5F3EF] via-[#F5F3EF]/85 to-transparent md:hidden" />
+        <div className="relative mt-[4vh] md:mt-[10vh]">
           <motion.p
             className="mb-5 flex items-center gap-2.5 font-mono2 text-[10px] tracking-[0.4em] text-[#1E3A2B] md:text-[11px]"
             initial={{ opacity: 0 }}
