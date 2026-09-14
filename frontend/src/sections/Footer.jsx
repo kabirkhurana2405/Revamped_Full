@@ -5,7 +5,7 @@ export default function Footer() {
     <footer data-testid="footer" className="bg-[#121212] px-5 py-14 text-[#F5F3EF] md:px-10">
       <div className="mx-auto flex max-w-[1600px] flex-col gap-10 md:flex-row md:items-end md:justify-between">
         <div>
-          <Logo wordmarkClass="text-2xl tracking-[0.15em]" markSize={30} />
+          <Logo mono wordmarkClass="text-2xl tracking-[0.15em]" markSize={30} />
           <p className="mt-2 font-mono2 text-[10px] tracking-[0.35em] text-[#5E8B6F]">STYLE. CYCLE. IMPACT.</p>
           <p className="mt-3 text-sm text-[#F5F3EF]/50">Fashion that keeps moving.</p>
         </div>

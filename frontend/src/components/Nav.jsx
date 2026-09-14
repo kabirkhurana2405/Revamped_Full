@@ -84,7 +84,7 @@ export default function Nav({ onNavigate, onGetApp }) {
           >
             <div className="flex items-center justify-between">
               <span className="text-[#F5F3EF]">
-                <Logo />
+                <Logo mono />
               </span>
               <button data-testid="mobile-menu-close" aria-label="Close menu" onClick={() => setOpen(false)} className="text-[#F5F3EF]">
                 <X size={26} />
