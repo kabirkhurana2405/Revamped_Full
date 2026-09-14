@@ -1,0 +1,240 @@
+import { useMemo, useRef } from "react";
+import * as THREE from "three";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { ContactShadows } from "@react-three/drei";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { createTeeGeometry, createFabricBump, StudioLights } from "../three/tee";
+import { MaskedLines, PillButton } from "../components/primitives";
+
+function HeroTee({ progress, mouse }) {
+  const group = useRef();
+  const mesh = useRef();
+  const pts = useRef();
+  const shadows = useRef();
+  const { size } = useThree();
+
+  const geo = useMemo(() => createTeeGeometry(size.width < 768 ? 0.7 : 1), [size.width]);
+  const bump = useMemo(() => createFabricBump(), []);
+
+  const ptsGeo = useMemo(() => {
+    const n = geo.attributes.position.count;
+    const scatter = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const r = 1.4 + Math.random() * 3.6;
+      scatter[i * 3] = Math.cos(ang) * r * 0.85;
+      scatter[i * 3 + 1] = -(0.6 + Math.random() * 3.8);
+      scatter[i * 3 + 2] = Math.sin(ang) * r * 0.6;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", geo.attributes.position);
+    g.setAttribute("aScatter", new THREE.BufferAttribute(scatter, 3));
+    return g;
+  }, [geo]);
+
+  const ptsMat = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        uniforms: {
+          uP: { value: 0 },
+          uOp: { value: 0 },
+          uPx: { value: Math.min(window.devicePixelRatio || 1, 1.75) },
+        },
+        vertexShader: `
+          attribute vec3 aScatter;
+          uniform float uP;
+          uniform float uPx;
+          varying float vA;
+          void main() {
+            float e = uP;
+            vec3 p = position + aScatter * e;
+            p.x += sin(e * 6.2831 + position.y * 3.0) * 0.14 * e;
+            vec4 mv = modelViewMatrix * vec4(p, 1.0);
+            gl_Position = projectionMatrix * mv;
+            gl_PointSize = (3.4 * uPx) * (4.5 / -mv.z);
+            vA = 1.0 - e * 0.2;
+          }`,
+        fragmentShader: `
+          uniform float uOp;
+          varying float vA;
+          void main() {
+            vec2 c = gl_PointCoord - 0.5;
+            float d = length(c);
+            if (d > 0.5) discard;
+            float a = smoothstep(0.5, 0.08, d) * uOp * vA;
+            gl_FragColor = vec4(0.55, 0.52, 0.45, a);
+          }`,
+      }),
+    []
+  );
+
+  useFrame((state, dt) => {
+    const p = progress.get();
+    const t = state.clock.elapsedTime;
+    const g = group.current;
+    if (!g) return;
+    const mobile = size.width < 768;
+    const offX = mobile ? 0 : 1.05;
+    const diss = THREE.MathUtils.smoothstep(p, 0.42, 0.74);
+    const k = Math.min(1, dt * 3.5);
+
+    g.rotation.y += (p * 1.5 + mouse.current.x * 0.16 + Math.sin(t * 0.4) * 0.05 - g.rotation.y) * k;
+    g.rotation.x += (mouse.current.y * 0.08 + Math.sin(t * 0.55) * 0.03 - g.rotation.x) * k;
+    g.position.y = Math.sin(t * 0.8) * 0.05 + p * 0.28;
+    g.position.x += (offX * (1 - diss) - g.position.x) * k;
+
+    const cam = state.camera;
+    const targetZ = (mobile ? 6.6 : 5.2) - p * 2.1;
+    cam.position.z += (targetZ - cam.position.z) * k;
+    cam.position.x += (mouse.current.x * 0.3 + offX * 0.55 * (1 - diss) - cam.position.x) * k;
+    cam.position.y += (-mouse.current.y * 0.22 - cam.position.y) * k;
+    cam.lookAt(g.position.x * 0.55, 0, 0);
+
+    if (mesh.current) {
+      mesh.current.material.opacity = 1 - diss;
+      mesh.current.visible = diss < 0.995;
+    }
+    if (pts.current) {
+      ptsMat.uniforms.uP.value = diss;
+      ptsMat.uniforms.uOp.value = Math.min(1, diss * 2.5);
+      pts.current.visible = diss > 0.003;
+      pts.current.rotation.copy(g.rotation);
+      pts.current.position.copy(g.position);
+    }
+    const shadowMesh = shadows.current?.children?.[0];
+    if (shadowMesh?.material) shadowMesh.material.opacity = 0.32 * (1 - diss);
+  });
+
+  return (
+    <group>
+      <group ref={group}>
+        <mesh ref={mesh} geometry={geo}>
+          <meshStandardMaterial
+            color="#E9E4D9"
+            roughness={0.94}
+            metalness={0}
+            bumpMap={bump}
+            bumpScale={0.5}
+            transparent
+          />
+        </mesh>
+      </group>
+      <points ref={pts} geometry={ptsGeo} material={ptsMat} visible={false} />
+      <ContactShadows ref={shadows} position={[0, -1.75, 0]} opacity={0.32} scale={10} blur={2.6} far={3.6} color="#3a382f" />
+    </group>
+  );
+}
+
+export default function Hero({ onExplore, onGetApp }) {
+  const ref = useRef(null);
+  const mouse = useRef({ x: 0, y: 0 });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.32], [1, 0]);
+  const overlayY = useTransform(scrollYProgress, [0, 0.32], [0, -70]);
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+
+  return (
+    <section id="hero" ref={ref} className="relative h-[240vh]" data-testid="hero-section">
+      <div
+        className="sticky top-0 h-screen overflow-hidden"
+        data-cursor="explore"
+        data-cursor-text="EXPLORE"
+        onMouseMove={(e) => {
+          mouse.current = {
+            x: (e.clientX / window.innerWidth) * 2 - 1,
+            y: (e.clientY / window.innerHeight) * 2 - 1,
+          };
+        }}
+      >
+        <div className="absolute inset-0">
+          <Canvas dpr={[1, 1.75]} camera={{ position: [0, 0, 5.2], fov: 40 }} gl={{ antialias: true, alpha: true }}>
+            <StudioLights />
+            <HeroTee progress={scrollYProgress} mouse={mouse} />
+          </Canvas>
+        </div>
+
+        <motion.div
+          className="pointer-events-none absolute inset-0 flex flex-col justify-between px-5 pb-8 pt-24 md:px-10 md:pb-10"
+          style={{ opacity: overlayOpacity, y: overlayY }}
+        >
+          <div className="mt-[6vh] md:mt-[10vh]">
+            <motion.p
+              className="mb-5 font-mono2 text-[10px] tracking-[0.4em] text-[#1E3A2B] md:text-[11px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+            >
+              CIRCULAR STREETWEAR &mdash; INDIA
+            </motion.p>
+            <h1 data-testid="hero-headline" className="font-display font-extrabold uppercase leading-[0.88] tracking-tight">
+              <MaskedLines
+                mount
+                delay={0.35}
+                lines={["STYLE.", "CYCLE."]}
+                lineClass="text-[clamp(2.9rem,11.5vw,10.5rem)] text-[#121212]"
+              />
+              <MaskedLines
+                mount
+                delay={0.61}
+                lines={["IMPACT."]}
+                lineClass="text-[clamp(2.9rem,11.5vw,10.5rem)] text-[#1E3A2B]"
+              />
+            </h1>
+            <motion.p
+              className="mt-6 max-w-md text-sm leading-relaxed text-[#121212]/70 md:text-base"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.8 }}
+            >
+              <span className="font-semibold text-[#121212]">Fashion that keeps moving.</span>
+              <br />
+              Revamped is building a circular streetwear system where the clothes you wear can keep
+              moving long after you&rsquo;re done with them.
+            </motion.p>
+            <motion.div
+              className="pointer-events-auto mt-8 flex flex-col gap-4 sm:flex-row sm:items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.15, duration: 0.8 }}
+            >
+              <PillButton testId="hero-download-btn" onClick={onGetApp}>
+                DOWNLOAD THE APP
+              </PillButton>
+              <button
+                data-testid="hero-discover-btn"
+                data-cursor="hover"
+                onClick={onExplore}
+                className="group inline-flex items-center gap-3 px-2 py-3 font-mono2 text-[11px] tracking-[0.25em] text-[#121212]/80 transition-colors hover:text-[#1E3A2B]"
+              >
+                DISCOVER THE LOOP
+                <span className="inline-block transition-transform duration-300 group-hover:translate-y-1">&darr;</span>
+              </button>
+            </motion.div>
+          </div>
+
+          <motion.div
+            data-testid="hero-drop-meta"
+            className="flex items-end justify-between font-mono2 text-[10px] tracking-[0.3em] text-[#121212]/60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4, duration: 0.8 }}
+          >
+            <span>DROP 001</span>
+            <span className="hidden sm:inline">50 PIECES</span>
+            <span>COMING SOON</span>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="pointer-events-none absolute bottom-24 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
+          style={{ opacity: hintOpacity }}
+        >
+          <span className="font-mono2 text-[9px] tracking-[0.35em] text-[#121212]/50">SCROLL</span>
+          <div className="scroll-line h-10 w-px bg-[#121212]/50" />
+        </motion.div>
+      </div>
+    </section>
+  );
+}

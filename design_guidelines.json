@@ -1,0 +1,109 @@
+{
+  "project_name": "REVAMPED",
+  "tagline": "STYLE. CYCLE. IMPACT.",
+  "app_type": "landing_page",
+  "theme": {
+    "mode": "light-neutral",
+    "primary_bg": "#F5F3EF",
+    "primary_dark": "#121212",
+    "deep_forest_green": "#1E3A2B",
+    "washed_grey": "#E2DFD8",
+    "natural_cotton": "#EBE7DF",
+    "border_subtle": "rgba(18, 18, 18, 0.12)",
+    "accent_green_glow": "rgba(30, 58, 43, 0.15)"
+  },
+  "typography": {
+    "heading_font": "Syne, sans-serif",
+    "body_font": "Plus Jakarta Sans, sans-serif",
+    "mono_font": "Space Mono, monospace",
+    "scale": {
+      "hero_h1": "text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter uppercase leading-[0.9]",
+      "section_h2": "text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight uppercase leading-none",
+      "subtitle": "text-lg sm:text-xl font-medium text-stone-600 tracking-wide",
+      "body": "text-base sm:text-lg leading-relaxed text-stone-800",
+      "spec_label": "text-xs font-mono uppercase tracking-[0.25em] text-stone-500"
+    }
+  },
+  "motion_and_interactions": {
+    "smooth_scroll": "Lenis momentum smooth scrolling active across full document",
+    "cursor": "Custom dual-ring magnetic cursor expanding on buttons and showing 'EXPLORE' on 3D canvas hover",
+    "hero_reveal": "Masked line-by-line staggered text reveal on initial page mount",
+    "marquee": "Slow organic editorial text drift with low-contrast muted palette (#121212 / #E2DFD8)",
+    "particle_disassembly": "Interactive Canvas/Three.js 3D Oversized Tee disassembling into fabric particles on scroll",
+    "3d_phone": "Interactive 3D rotated phone showcase with tab switcher for 6 app screens (Home, Return, Impact, Journey, Rewards, Drop)"
+  },
+  "key_sections": [
+    {
+      "id": "hero",
+      "title": "01 Hero",
+      "description": "3D oversized tee with mouse parallax, scroll disassembly into fabric particles, kinetic brand statement, and immediate waitlist CTA."
+    },
+    {
+      "id": "style",
+      "title": "02 Style",
+      "description": "Tactile technical spec sheet: 240 GSM, 100% combed cotton, relaxed drop shoulder, high-density embroidery, custom ribbing."
+    },
+    {
+      "id": "problem",
+      "title": "03 The Problem",
+      "description": "Dark editorial chapter: 'What happens when you're done with it?' High contrast dark surface detailing linear waste vs circular loop."
+    },
+    {
+      "id": "take-back",
+      "title": "04 The Take-Back",
+      "description": "Interactive discount counter (0 to 4 garments), live price calculator (₹999 down to ₹799 max 20% off), explicit rule breakdown."
+    },
+    {
+      "id": "three-paths",
+      "title": "05 Three Paths",
+      "description": "Interactive branching visual: Rewear -> Revamp -> Recycle connected via an animated continuous circular ribbon loop."
+    },
+    {
+      "id": "impact",
+      "title": "06 Impact",
+      "description": "Traceable Impact Ledger starting at 0 ('We're starting with 50'), glass dashboard preview card clearly labelled DEMO."
+    },
+    {
+      "id": "drop-001",
+      "title": "07 Drop 001",
+      "description": "Limited pilot collection showcase (50 pieces total, 3 designs: Minimal, Statement, Circular @ ₹999 each) with tactile detail zoom."
+    },
+    {
+      "id": "the-app",
+      "title": "08 The App",
+      "description": "3D phone interactive frame with 6 simulated screens. App store buttons open 'Coming Soon' modal with email waitlist capture."
+    },
+    {
+      "id": "final-cta",
+      "title": "09 Final CTA",
+      "description": "Deep forest green anchor block with massive typography 'BECOME PART OF THE LOOP' and instant waitlist form."
+    },
+    {
+      "id": "footer",
+      "title": "10 Footer",
+      "description": "Minimal high-fashion footer with massive kinetic logo, trademark specs, manifest chapter anchors, and social links."
+    }
+  ],
+  "image_urls": {
+    "hero_tee": "https://images.unsplash.com/photo-1627225793904-a2f900a6e4cf?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "minimal_tee": "https://images.unsplash.com/photo-1661110546797-d86cc72a2765?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "statement_tee": "https://images.unsplash.com/photo-1622445275992-e7efb32d2257?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "circular_tee": "https://images.unsplash.com/photo-1535487958887-032fb5767ade?crop=entropy&cs=srgb&fm=jpg&q=85"
+  },
+  "copy_rules": {
+    "prohibited": [
+      "save the planet",
+      "eco-friendly revolution",
+      "green fashion movement",
+      "fake statistics",
+      "fake partners"
+    ],
+    "mandatory_takeback_text": "Bring back clothes you no longer want when you buy from Revamped. Get 5% off for every garment you contribute. Up to 4 garments. Maximum 20% off."
+  },
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": {
+    "testing_attribute": "Every interactive button, link, tab, input, modal trigger, slider, and counter MUST contain explicit data-testid attributes (e.g. data-testid='hero-waitlist-button', data-testid='takeback-slider', data-testid='coming-soon-email-input').",
+    "no_transparent_headers": "Header MUST use glassmorphism backdrop-blur-md bg-[#F5F3EF]/80 with a 1px solid border bottom. Never fully transparent.",
+    "sonner_toast": "Use sonner toast for waitlist submissions and copy actions.",
+    "fonts": "Import Syne, Plus Jakarta Sans, and Space Mono from Google Fonts in index.html or index.css."
+  }
+}
