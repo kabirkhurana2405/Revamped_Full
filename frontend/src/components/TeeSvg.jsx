@@ -1,4 +1,4 @@
-export default function TeeSvg({ color = "#E9E4D9", accent = "#1E3A2B", className = "", folds = true }) {
+export default function TeeSvg({ color = "#E9E4D9", className = "", folds = true, logoSrc = "/logo.png" }) {
   return (
     <svg viewBox="0 0 200 210" className={className} fill="none" aria-hidden="true">
       <path
@@ -15,7 +15,7 @@ export default function TeeSvg({ color = "#E9E4D9", accent = "#1E3A2B", classNam
           <path d="M126 78 Q122 118 127 160" />
         </g>
       )}
-      <rect x="112" y="62" width="22" height="7" rx="3.5" fill={accent} />
+      <image href={logoSrc} x="104" y="50" width="32" height="33" />
     </svg>
   );
 }

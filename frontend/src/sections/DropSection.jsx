@@ -7,21 +7,21 @@ const SHIRTS = [
     name: "MINIMAL",
     sub: "DESIGN 01 — SMALL EMBROIDERED BRANDING",
     color: "#E9E4D9",
-    accent: "#1E3A2B",
+    logoSrc: "/logo.png",
     initial: { opacity: 0, rotate: -7, y: 70 },
   },
   {
     name: "STATEMENT",
     sub: "DESIGN 02 — LARGER GRAPHIC + EMBROIDERY",
     color: "#22402F",
-    accent: "#E9E4D9",
+    logoSrc: "/logo-bone.png",
     initial: { opacity: 0, x: -70 },
   },
   {
     name: "CIRCULAR",
     sub: "DESIGN 03 — OLD → REVAMPED → NEW",
     color: "#2C2C29",
-    accent: "#E9E4D9",
+    logoSrc: "/logo-bone.png",
     initial: { opacity: 0, scale: 0.7 },
   },
 ];
@@ -60,7 +60,7 @@ export default function DropSection({ onAccess, onGetApp }) {
               transition={{ duration: 0.9, ease: EASE, delay: i * 0.14 }}
             >
               <div className="transition-transform duration-500 group-hover:-translate-y-2">
-                <TeeSvg color={sh.color} accent={sh.accent} className="w-40 md:w-48" />
+                <TeeSvg color={sh.color} logoSrc={sh.logoSrc} className="w-40 md:w-48" />
               </div>
               <p data-testid={`drop-shirt-label-${sh.name.toLowerCase()}`} className="mt-6 font-display text-xl font-bold tracking-[0.15em] text-[#121212]">
                 {sh.name}

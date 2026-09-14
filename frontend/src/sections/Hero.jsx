@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
 import { motion, useInView, useReducedMotion } from "framer-motion";
@@ -11,6 +12,11 @@ function HeroTee({ mouse }) {
   const { size } = useThree();
   const geo = useMemo(() => createTeeGeometry(size.width < 768 ? 0.55 : 0.75), [size.width]);
   const bump = useMemo(() => createFabricBump(), []);
+  const logoTex = useMemo(() => {
+    const t = new THREE.TextureLoader().load("/logo.png");
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }, []);
   const mobile = size.width < 768;
 
   useFrame((state, dt) => {
@@ -33,6 +39,10 @@ function HeroTee({ mouse }) {
       <group ref={group} position={[mobile ? 0 : 1.05, 0, 0]}>
         <mesh geometry={geo}>
           <meshStandardMaterial color="#E9E4D9" roughness={0.94} metalness={0} bumpMap={bump} bumpScale={0.5} />
+        </mesh>
+        <mesh position={[0.32, 0.34, 0.38]}>
+          <planeGeometry args={[0.52, 0.54]} />
+          <meshBasicMaterial map={logoTex} transparent toneMapped={false} depthWrite={false} />
         </mesh>
       </group>
       <ContactShadows position={[mobile ? 0 : 1.05, -1.75, 0]} opacity={0.3} scale={10} blur={2.6} far={3.6} color="#3a382f" frames={1} />
