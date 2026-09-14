@@ -113,6 +113,21 @@
     animation: scroll-pulse 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
+@keyframes scan-y {
+    0%, 100% {
+        top: 6%;
+    }
+    50% {
+        top: 90%;
+    }
+}
+.scan-line {
+    animation: scan-y 3.2s ease-in-out infinite;
+}
+.animate-float-y {
+    animation: float-y 6s ease-in-out infinite;
+}
+
 .grain::before {
     content: "";
     position: fixed;
@@ -135,7 +150,9 @@
     .marquee-track,
     .spin-slow,
     .spin-slower,
-    .scroll-line {
+    .scroll-line,
+    .scan-line,
+    .animate-float-y {
         animation: none;
     }
 }

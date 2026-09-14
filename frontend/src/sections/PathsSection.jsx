@@ -8,21 +8,21 @@ const PATHS = [
     num: "PATH 01",
     title: "REWEAR",
     icon: Shirt,
-    copy: "If it's still wearable, it can be restored and directed toward another wearer or genuine community use.",
+    copy: "Still wearable. Restored and directed toward another wearer or donation pathway.",
   },
   {
     id: "revamp",
     num: "PATH 02",
     title: "REVAMP",
     icon: Scissors,
-    copy: "If the material has creative potential, selected pieces can be transformed into something new.",
+    copy: "Still has potential. Selected garments can be transformed through redesign and upcycling.",
   },
   {
     id: "recycle",
     num: "PATH 03",
     title: "RECYCLE",
     icon: Layers,
-    copy: "If it is no longer suitable for wear or reconstruction, it can move toward textile recycling.",
+    copy: "No longer wearable. Material is directed toward appropriate textile recycling pathways.",
   },
 ];
 
@@ -30,7 +30,7 @@ export default function PathsSection() {
   return (
     <section id="paths" data-testid="paths-section" className="relative overflow-hidden bg-[#ECE8E0] py-28 md:py-40">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-        <Chapter num="05" label="THREE PATHS" />
+        <Chapter num="06" label="THREE PATHS" />
         <h2 className="mt-8 text-center font-display font-extrabold uppercase leading-[0.92] tracking-tight">
           <MaskedLines
             lines={["ONE RETURN.", "THREE POSSIBILITIES."]}
@@ -88,8 +88,8 @@ export default function PathsSection() {
 
           <Reveal className="mt-12 text-center">
             <p className="mx-auto max-w-lg font-mono2 text-[10px] leading-relaxed tracking-[0.15em] text-[#121212]/50">
-              THIS IS THE INTENDED CIRCULAR SYSTEM. EVERY RETURNED GARMENT IS ASSESSED FIRST &mdash;
-              NOT EVERY GARMENT FOLLOWS THE SAME ROUTE.
+              THE CONDITION ASSESSMENT DETERMINES THE APPROPRIATE PATHWAY &mdash; NOT EVERY
+              GARMENT FOLLOWS THE SAME ROUTE.
             </p>
           </Reveal>
         </div>

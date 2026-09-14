@@ -21,15 +21,19 @@ Single-page premium launch site for REVAMPED, an Indian circular streetwear bran
 5. App preview with 6 branded screens + store buttons opening Coming Soon waitlist modal
 6. Honest copy: no fake impact numbers (ledger starts at 0, dashboard marked DEMO)
 
-## Implemented (2026-09-14)
-- All 10 sections with scroll choreography, numbered chapters, editorial marquee
-- 3D tee (procedural, fabric folds/bump), hero disassembly particles, style spec focus, drop trio entrance, final CTA tee
-- Custom cursor (hover expand + EXPLORE over 3D), magnetic buttons, Lenis smooth scroll, grain overlay
-- Take-back ring + working discount calculator
-- Impact ledger zeros, animated 0→50 counter, 50-dot field organizing into three arcs, DEMO dashboard card
-- CSS-3D rotating phone with 6 live app screens (Home/Return/Impact/Journey/Rewards/Drop)
-- Waitlist API (dedupe, count endpoint) + Resend confirmation email (verified sent)
-- Sticky glass nav, mobile menu, mobile-specific layouts
+## Implemented
+2026-09-14 — v1: All 10 sections with scroll choreography, 3D tee hero, calculator, phone preview, waitlist + Resend email.
+2026-09-14 — v2 (business model + performance revision):
+- CRITICAL: take-back now clearly accepts clothes from ANY brand ("We take back all clothes" banner, any-brand copy across hero/take-back/app/final); removed all "Revamped-only return" wording
+- Take-back rebuilt: BUY. WEAR. BRING IT BACK. + 4 steps (BRING IT / AI CHECK / SORT / IMPACT) + CLOSET → AI CHECK → SORT → NEW LIFE → IMPACT flow strip
+- New section 05 AI CHECK: 2D scanning animation (scan line, corner brackets, CONDITION/WEAR/DAMAGE/REUSE POTENTIAL labels, AI ASSESSMENT → REWEAR, "AI assists, team verifies" disclaimer)
+- Discount clarity: "5% OFF PER GARMENT", "BRING 1→4" grid, "up to 4 garments per purchase", "a discount, not a buy-back"
+- 3D reduced to ONE WebGL canvas (hero tee only): removed hero particle disassembly, style/drop/final 3D scenes; hero tee now gentle rotate/float/mouse, pauses offscreen, low-power mode, static SVG fallback + reduced-motion fallback
+- Phone mockup is pure CSS (tilt + parallax + screen transitions, no WebGL); 6 new app screens (Home, Bring It Back, AI Condition Check, Your Impact w/ SAMPLE DATA tag, Garment Journey 5-step timeline, Cycle Rewards)
+- App download block: "THE CYCLE IS GOING MOBILE." + COMING SOON + store buttons → waitlist modal
+- Impact: new headline "STYLE IS WHAT YOU WEAR..." + lightweight animated flow (Closet → Contribute → AI Check → 3 paths → New Life → Impact); ledger/50 counter/dots/DEMO dashboard retained
+- Three Paths cards updated with condition-based copy
+- Chapter numbering resequenced 01–09
 
 ## Verified
 - curl POST /api/waitlist → {"status":"joined","email_sent":true}; duplicate → "already"; count endpoint works

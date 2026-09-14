@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, animate } from "framer-motion";
+import { ArrowDown } from "lucide-react";
 import { Chapter, MaskedLines, Reveal, EASE } from "../components/primitives";
 
 const Counter = ({ to, className, testId }) => {
@@ -94,19 +95,68 @@ export default function ImpactSection() {
   return (
     <section id="impact" data-testid="impact-section" className="relative bg-[#F5F3EF] py-28 md:py-40">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-        <Chapter num="06" label="IMPACT" />
+        <Chapter num="07" label="IMPACT" />
         <h2 className="mt-8 font-display font-extrabold uppercase leading-[0.94] tracking-tight">
           <MaskedLines
-            lines={["STYLE IS WHAT YOU SEE.", "IMPACT IS WHAT", "YOU LEAVE BEHIND."]}
+            lines={["STYLE IS WHAT YOU WEAR.", "IMPACT IS WHAT", "YOU LEAVE BEHIND."]}
             lineClass="text-[clamp(2.2rem,6vw,5.5rem)] text-[#121212]"
           />
         </h2>
         <Reveal delay={0.2} className="mt-8 max-w-xl">
           <p className="text-sm leading-relaxed text-[#121212]/70 md:text-base">
-            Every returned garment creates a chance to keep material in use rather than simply ending
-            its journey.
+            Every garment has a story after you stop wearing it.
           </p>
         </Reveal>
+
+        <div data-testid="impact-flow" className="mt-16 flex flex-col items-center md:mt-20">
+          {["YOUR CLOSET", "CONTRIBUTE", "AI CONDITION CHECK"].map((s, i) => (
+            <div key={s} className="flex flex-col items-center">
+              <Reveal delay={i * 0.08}>
+                <span className="rounded-full border border-[#121212]/15 bg-white/50 px-6 py-3 font-mono2 text-[10px] tracking-[0.3em] text-[#121212]">
+                  {s}
+                </span>
+              </Reveal>
+              <Reveal delay={i * 0.08 + 0.04}>
+                <ArrowDown size={16} className="my-2 text-[#1E3A2B]" />
+              </Reveal>
+            </div>
+          ))}
+          <Reveal delay={0.3}>
+            <div className="flex flex-wrap justify-center gap-2.5">
+              {["REWEAR", "REVAMP", "RECYCLE"].map((p) => (
+                <span
+                  key={p}
+                  className="rounded-full bg-[#1E3A2B] px-5 py-2.5 font-mono2 text-[9px] tracking-[0.25em] text-[#F5F3EF]"
+                >
+                  {p}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+          <Reveal delay={0.36}>
+            <ArrowDown size={16} className="my-2 text-[#1E3A2B]" />
+          </Reveal>
+          {["NEW LIFE", "IMPACT"].map((s, i) => (
+            <div key={s} className="flex flex-col items-center">
+              <Reveal delay={0.4 + i * 0.08}>
+                <span
+                  className={`rounded-full px-6 py-3 font-mono2 text-[10px] tracking-[0.3em] ${
+                    s === "IMPACT"
+                      ? "bg-[#121212] text-[#F5F3EF]"
+                      : "border border-[#121212]/15 bg-white/50 text-[#121212]"
+                  }`}
+                >
+                  {s}
+                </span>
+              </Reveal>
+              {i === 0 && (
+                <Reveal delay={0.44}>
+                  <ArrowDown size={16} className="my-2 text-[#1E3A2B]" />
+                </Reveal>
+              )}
+            </div>
+          ))}
+        </div>
 
         <div data-testid="impact-ledger" className="mt-20 grid gap-px overflow-hidden rounded-3xl border border-[#121212]/10 bg-[#121212]/10 md:grid-cols-3">
           {LEDGER.map(([label, val]) => (

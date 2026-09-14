@@ -1,9 +1,7 @@
-import { useMemo, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
-import { useInView } from "framer-motion";
-import { createTeeGeometry, createFabricBump, StudioLights } from "../three/tee";
-import { Chapter, MaskedLines, Reveal } from "../components/primitives";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Chapter, MaskedLines, Reveal, EASE } from "../components/primitives";
+import TeeSvg from "../components/TeeSvg";
 
 const SPECS = [
   { label: "240 GSM", spec: "fabric", pos: "left-[4%] top-[14%]" },
@@ -13,44 +11,15 @@ const SPECS = [
   { label: "DROP SHOULDER", spec: "fit", pos: "right-[2%] top-[52%]" },
 ];
 
-function StyleTee({ active }) {
-  const group = useRef();
-  const geo = useMemo(() => createTeeGeometry(0.85), []);
-  const bump = useMemo(() => createFabricBump(), []);
-
-  useFrame((state, dt) => {
-    const t = state.clock.elapsedTime;
-    const g = group.current;
-    if (!g) return;
-    const cfg = {
-      none: { s: 1, rx: 0 },
-      fabric: { s: 1.5, rx: 0.06 },
-      embroidery: { s: 1.32, rx: 0.1 },
-      fit: { s: 0.8, rx: 0 },
-    }[active || "none"];
-    const k = Math.min(1, dt * 3);
-    g.scale.setScalar(g.scale.x + (cfg.s - g.scale.x) * k);
-    g.rotation.y = t * (active === "none" || active === "fit" ? 0.1 : 0.05);
-    g.rotation.x += (cfg.rx - g.rotation.x) * k;
-  });
-
-  return (
-    <group ref={group}>
-      <mesh geometry={geo}>
-        <meshStandardMaterial color="#E9E4D9" roughness={0.94} metalness={0} bumpMap={bump} bumpScale={0.5} />
-      </mesh>
-      <mesh position={[0.3, 0.34, 0.34]}>
-        <boxGeometry args={[0.3, 0.09, 0.03]} />
-        <meshStandardMaterial color="#1E3A2B" roughness={0.8} />
-      </mesh>
-    </group>
-  );
-}
+const SPOT = {
+  none: { opacity: 0 },
+  fabric: { opacity: 1, top: "42%", left: "28%", width: "44%", height: "48%" },
+  embroidery: { opacity: 1, top: "24%", left: "52%", width: "22%", height: "16%" },
+  fit: { opacity: 1, top: "12%", left: "14%", width: "72%", height: "78%" },
+};
 
 export default function StyleSection() {
   const [active, setActive] = useState("none");
-  const wrapRef = useRef(null);
-  const inView = useInView(wrapRef, { margin: "220px" });
 
   return (
     <section id="style" data-testid="style-section" className="relative overflow-hidden bg-[#F5F3EF] py-28 md:py-40">
@@ -89,17 +58,18 @@ export default function StyleSection() {
           </Reveal>
         </div>
 
-        <div ref={wrapRef} className="relative h-[58vh] md:h-[78vh]" data-cursor="explore" data-cursor-text="EXPLORE">
-          <Canvas
-            frameloop={inView ? "always" : "never"}
-            dpr={[1, 1.75]}
-            camera={{ position: [0, 0, 5.6], fov: 38 }}
-            gl={{ antialias: true, alpha: true }}
+        <div className="relative flex h-[52vh] items-center justify-center md:h-[72vh]" data-cursor="explore" data-cursor-text="EXPLORE">
+          <motion.div
+            animate={{ scale: active === "fit" ? 0.88 : active === "none" ? 1 : 1.12 }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
-            <StudioLights />
-            <StyleTee active={active} />
-            <ContactShadows position={[0, -1.8, 0]} opacity={0.3} scale={9} blur={2.6} far={3.4} color="#3a382f" />
-          </Canvas>
+            <TeeSvg className="animate-float-y w-64 md:w-[24rem]" />
+          </motion.div>
+          <motion.div
+            className="pointer-events-none absolute rounded-full border-2 border-[#1E3A2B]/60"
+            animate={SPOT[active] || SPOT.none}
+            transition={{ duration: 0.5, ease: EASE }}
+          />
           {SPECS.map((s, i) => (
             <button
               key={s.label}

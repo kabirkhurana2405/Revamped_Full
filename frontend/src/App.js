@@ -9,6 +9,7 @@ import Hero from "./sections/Hero";
 import StyleSection from "./sections/StyleSection";
 import ProblemSection from "./sections/ProblemSection";
 import TakeBackSection from "./sections/TakeBackSection";
+import AISection from "./sections/AISection";
 import PathsSection from "./sections/PathsSection";
 import ImpactSection from "./sections/ImpactSection";
 import DropSection from "./sections/DropSection";
@@ -56,6 +57,7 @@ function App() {
         <StyleSection />
         <ProblemSection />
         <TakeBackSection />
+        <AISection />
         <PathsSection />
         <ImpactSection />
         <Marquee />
