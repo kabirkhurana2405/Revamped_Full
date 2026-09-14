@@ -1,74 +1,80 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import Lenis from "lenis";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import "@/App.css";
-import Cursor from "./components/Cursor";
-import Nav from "./components/Nav";
-import WaitlistModal from "./components/WaitlistModal";
-import Marquee from "./components/Marquee";
-import Hero from "./sections/Hero";
-import StyleSection from "./sections/StyleSection";
-import ProblemSection from "./sections/ProblemSection";
-import TakeBackSection from "./sections/TakeBackSection";
-import AISection from "./sections/AISection";
-import PathsSection from "./sections/PathsSection";
-import ImpactSection from "./sections/ImpactSection";
-import DropSection from "./sections/DropSection";
-import AppSection from "./sections/AppSection";
-import FinalCTA from "./sections/FinalCTA";
-import Footer from "./sections/Footer";
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import Landing from "./pages/Landing";
+import Catalogue from "./pages/Catalogue";
+import ProductDetail from "./pages/ProductDetail";
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import LoginPage from "./pages/LoginPage";
+import AccountPage from "./pages/AccountPage";
+import ImpactPage from "./pages/ImpactPage";
+import TakeBackPage from "./pages/TakeBackPage";
+import AssessPage from "./pages/AssessPage";
+import RewardsPage from "./pages/RewardsPage";
+import AdminLogin from "./admin/AdminLogin";
+import AdminLayout from "./admin/AdminLayout";
+import Dashboard from "./admin/Dashboard";
+import Products from "./admin/Products";
+import ProductForm from "./admin/ProductForm";
+import Inventory from "./admin/Inventory";
+import Orders from "./admin/Orders";
+import Customers from "./admin/Customers";
+import TakeBacks from "./admin/TakeBacks";
+import Assessments from "./admin/Assessments";
+import ImpactAdmin from "./admin/ImpactAdmin";
+import Settings from "./admin/Settings";
 import { Toaster } from "./components/ui/sonner";
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  return null;
+}
+
 function App() {
-  const lenisRef = useRef(null);
-  const [modal, setModal] = useState({ open: false, source: "site" });
-  const openModal = useCallback((source = "site") => setModal({ open: true, source }), []);
-
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    const lenis = new Lenis({ duration: 1.15 });
-    lenisRef.current = lenis;
-    let raf;
-    const loop = (t) => {
-      lenis.raf(t);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => {
-      cancelAnimationFrame(raf);
-      lenis.destroy();
-    };
-  }, []);
-
-  const scrollTo = useCallback((target) => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(target, { duration: 1.6 });
-    } else {
-      document.querySelector(target)?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, []);
-
   return (
-    <div className="grain min-h-screen bg-[#F5F3EF] text-[#121212] antialiased">
-      <Cursor />
-      <Nav onNavigate={scrollTo} onGetApp={() => openModal("nav")} />
-      <main>
-        <Hero onExplore={() => scrollTo("#style")} onGetApp={() => openModal("hero")} />
-        <StyleSection />
-        <ProblemSection />
-        <TakeBackSection />
-        <AISection />
-        <PathsSection />
-        <ImpactSection />
-        <Marquee />
-        <DropSection onAccess={() => openModal("drop")} onGetApp={() => openModal("drop")} />
-        <AppSection onGetApp={() => openModal("app")} />
-        <FinalCTA onGetApp={() => openModal("final")} onAccess={() => openModal("final")} />
-      </main>
-      <Footer />
-      <WaitlistModal open={modal.open} source={modal.source} onClose={() => setModal((m) => ({ ...m, open: false }))} />
-      <Toaster position="bottom-center" />
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <CartProvider>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/men" element={<Catalogue gender="men" />} />
+            <Route path="/women" element={<Catalogue gender="women" />} />
+            <Route path="/product/:slug" element={<ProductDetail />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/order/:orderNumber" element={<OrderConfirmation />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/impact" element={<ImpactPage />} />
+            <Route path="/take-back" element={<TakeBackPage />} />
+            <Route path="/take-back/assess" element={<AssessPage />} />
+            <Route path="/rewards" element={<RewardsPage />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="products" element={<Products />} />
+              <Route path="products/new" element={<ProductForm />} />
+              <Route path="products/:id" element={<ProductForm />} />
+              <Route path="inventory" element={<Inventory />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="customers" element={<Customers />} />
+              <Route path="takebacks" element={<TakeBacks />} />
+              <Route path="assessments" element={<Assessments />} />
+              <Route path="impact" element={<ImpactAdmin />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+            <Route path="*" element={<Catalogue gender="men" />} />
+          </Routes>
+          <Toaster position="bottom-center" />
+        </CartProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

@@ -50,7 +50,7 @@ function HeroTee({ mouse }) {
   );
 }
 
-export default function Hero({ onExplore, onGetApp }) {
+export default function Hero({ onExplore, onGetApp, onShop }) {
   const mouse = useRef({ x: 0, y: 0 });
   const wrapRef = useRef(null);
   const inView = useInView(wrapRef, { margin: "150px" });
@@ -136,17 +136,17 @@ export default function Hero({ onExplore, onGetApp }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.15, duration: 0.8 }}
           >
-            <PillButton testId="hero-download-btn" onClick={onGetApp}>
-              DOWNLOAD THE APP
+            <PillButton testId="hero-shop-btn" onClick={onShop}>
+              SHOP DROP 001
             </PillButton>
             <button
-              data-testid="hero-discover-btn"
+              data-testid="hero-download-btn"
               data-cursor="hover"
-              onClick={onExplore}
+              onClick={onGetApp}
               className="group inline-flex items-center gap-3 px-2 py-3 font-mono2 text-[11px] tracking-[0.25em] text-[#121212]/80 transition-colors hover:text-[#1E3A2B]"
             >
-              DISCOVER THE LOOP
-              <span className="inline-block transition-transform duration-300 group-hover:translate-y-1">&darr;</span>
+              DOWNLOAD THE APP
+              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
             </button>
           </motion.div>
         </div>

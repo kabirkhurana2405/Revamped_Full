@@ -1,32 +1,33 @@
 from fastapi import FastAPI, APIRouter, HTTPException
-from dotenv import load_dotenv
+from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import re
 import ipaddress
 import logging
 import uuid
 import httpx
-from html import escape
 from html.parser import HTMLParser
 from urllib.parse import urlparse
 from pathlib import Path
 from pydantic import BaseModel, EmailStr
 from datetime import datetime, timezone
 
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
+from db import db
+from seed import run_seed
+from routes_auth import router as auth_router
+from routes_shop import router as shop_router
+from routes_takeback import router as takeback_router
+from routes_admin import router as admin_router
 
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+UPLOAD_DIR = Path("/app/backend/uploads")
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # Emergent managed email proxy (constant, never from env)
 EMAIL_BASE_URL = "https://integrations.emergentagent.com"
@@ -193,17 +194,38 @@ async def waitlist_count():
     return {"count": count}
 
 
+@app.get("/api/files/{name}")
+async def serve_file(name: str):
+    safe = os.path.basename(name)
+    path = UPLOAD_DIR / safe
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(path)
+
+
 app.include_router(api_router)
+app.include_router(auth_router)
+app.include_router(shop_router)
+app.include_router(takeback_router)
+app.include_router(admin_router)
 
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
+@app.on_event("startup")
+async def startup():
+    await run_seed()
+    logger.info("Seed complete")
+
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
+    from db import client
+
     client.close()

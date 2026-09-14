@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { Chapter, MaskedLines, Reveal } from "../components/primitives";
 
@@ -228,6 +229,14 @@ export default function TakeBackSection() {
               </span>
             ))}
           </div>
+          <Link
+            to="/take-back"
+            data-testid="takeback-start-btn"
+            data-cursor="hover"
+            className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#121212] px-8 py-4 font-mono2 text-[11px] tracking-[0.25em] text-[#F5F3EF] transition-colors duration-300 hover:bg-[#1E3A2B]"
+          >
+            START A TAKE-BACK &rarr;
+          </Link>
         </Reveal>
 
         <Calculator />
