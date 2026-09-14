@@ -36,6 +36,7 @@ Single-page premium launch site for REVAMPED, an Indian circular streetwear bran
 - Chapter numbering resequenced 01–09
 2026-09-14 — v3 (brand mark): circular-loop "R" symbol (SVG, components/Logo.jsx: LogoMark + Logo lockup) added alongside existing Syne wordmark; placed in nav, mobile menu, footer, app screen headers, waitlist modal, email header (table-safe ring span), favicon (public/logo-mark.svg). Awaiting user's own logo file for refinement/swap.
 2026-09-14 — v4 (logo redesign per user reference): mark rebuilt as three circulating arrows (charcoal #2B2B28) with red accent swooshes (#E23B3B) around a hanger + bold serif-contrast "V" monogram; mono variant (currentColor) for dark surfaces; placed in nav, mobile menu, footer, app screens, waitlist modal, favicon; email header ring tinted red to echo accent.
+2026-09-14 — v5 (exact user logo): extracted the user's actual uploaded artwork (white→alpha, trimmed) as public/logo.png; LogoMark now renders the real image (bone circular chip variant for dark surfaces); favicon regenerated from the real mark (forest tile + bone disc) as public/logo-icon.png; interim SVG mark removed.
 
 ## Verified
 - curl POST /api/waitlist → {"status":"joined","email_sent":true}; duplicate → "already"; count endpoint works
