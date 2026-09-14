@@ -34,7 +34,7 @@ export default function PathsSection() {
         <h2 className="mt-8 text-center font-display font-extrabold uppercase leading-[0.92] tracking-tight">
           <MaskedLines
             lines={["ONE RETURN.", "THREE POSSIBILITIES."]}
-            lineClass="text-[clamp(2.4rem,7vw,6.5rem)] text-[#121212]"
+            lineClass="text-[clamp(2rem,5vw,4.5rem)] text-[#121212]"
           />
         </h2>
 

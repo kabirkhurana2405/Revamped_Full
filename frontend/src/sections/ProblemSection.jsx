@@ -52,7 +52,7 @@ export default function ProblemSection() {
         <h2 className="mt-8 font-display font-extrabold uppercase leading-[0.92] tracking-tight">
           <MaskedLines
             lines={["WHAT HAPPENS", "WHEN YOU'RE", "DONE WITH IT?"]}
-            lineClass="text-[clamp(2.6rem,7.5vw,7rem)]"
+            lineClass="text-[clamp(2.1rem,5.5vw,5rem)]"
           />
         </h2>
 
@@ -80,12 +80,12 @@ export default function ProblemSection() {
           <h3 className="relative text-center font-display font-bold uppercase leading-[1.02] tracking-tight">
             <MaskedLines
               lines={["THE END OF YOUR USE", "DOESN'T HAVE TO BE"]}
-              lineClass="text-[clamp(1.8rem,4.5vw,4rem)] text-[#F5F3EF]/90"
+              lineClass="text-[clamp(1.5rem,3.4vw,3.1rem)] text-[#F5F3EF]/90"
             />
             <MaskedLines
               delay={0.3}
               lines={["THE END OF THE GARMENT."]}
-              lineClass="text-[clamp(1.8rem,4.5vw,4rem)] text-[#5E8B6F]"
+              lineClass="text-[clamp(1.5rem,3.4vw,3.1rem)] text-[#5E8B6F]"
             />
           </h3>
         </div>

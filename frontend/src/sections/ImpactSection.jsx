@@ -99,7 +99,7 @@ export default function ImpactSection() {
         <h2 className="mt-8 font-display font-extrabold uppercase leading-[0.94] tracking-tight">
           <MaskedLines
             lines={["STYLE IS WHAT YOU WEAR.", "IMPACT IS WHAT", "YOU LEAVE BEHIND."]}
-            lineClass="text-[clamp(2.2rem,6vw,5.5rem)] text-[#121212]"
+            lineClass="text-[clamp(1.9rem,4.5vw,4.25rem)] text-[#121212]"
           />
         </h2>
         <Reveal delay={0.2} className="mt-8 max-w-xl">
@@ -177,7 +177,7 @@ export default function ImpactSection() {
           <Counter
             to={50}
             testId="impact-counter-50"
-            className="mt-2 block font-display text-[26vw] font-extrabold leading-none text-[#1E3A2B] md:text-[13rem]"
+            className="mt-2 block font-display text-[20vw] font-extrabold leading-none text-[#1E3A2B] md:text-[9rem]"
           />
           <Reveal>
             <p className="font-mono2 text-[11px] tracking-[0.4em] text-[#121212]/60">DROP 001 PILOT</p>
@@ -195,7 +195,7 @@ export default function ImpactSection() {
             <h3 className="font-display font-extrabold uppercase leading-[0.95] tracking-tight">
               <MaskedLines
                 lines={["IMPACT SHOULD", "BE TRACEABLE."]}
-                lineClass="text-[clamp(2rem,5vw,4.5rem)] text-[#121212]"
+                lineClass="text-[clamp(1.7rem,3.6vw,3.4rem)] text-[#121212]"
               />
             </h3>
             <Reveal delay={0.15} className="mt-6 max-w-md">

@@ -27,7 +27,7 @@ export default function FinalCTA({ onGetApp, onAccess }) {
         </Reveal>
 
         <h2 className="mt-8 font-display font-extrabold uppercase leading-[0.88] tracking-tight">
-          <MaskedLines lines={["STYLE.", "CYCLE.", "IMPACT."]} lineClass="text-[clamp(3.2rem,11vw,9rem)]" />
+          <MaskedLines lines={["STYLE.", "CYCLE.", "IMPACT."]} lineClass="text-[clamp(2.6rem,8vw,6.5rem)]" />
         </h2>
         <Reveal delay={0.2} className="mt-8">
           <p className="font-mono2 text-[11px] tracking-[0.35em] text-[#F5F3EF]/70 md:text-xs">

@@ -38,7 +38,7 @@ export default function DropSection({ onAccess, onGetApp }) {
           <h2 className="mt-6 font-display font-extrabold uppercase leading-[0.9] tracking-tight">
             <MaskedLines
               lines={["DROP 001"]}
-              lineClass="text-[clamp(3.4rem,11vw,9.5rem)] text-[#121212]"
+              lineClass="text-[clamp(2.6rem,8vw,7rem)] text-[#121212]"
             />
           </h2>
           <Reveal delay={0.15}>
@@ -92,8 +92,8 @@ export default function DropSection({ onAccess, onGetApp }) {
 
         <div className="mt-28 text-center md:mt-36">
           <h3 className="font-display font-extrabold uppercase leading-[0.9] tracking-tight">
-            <MaskedLines lines={["50 PIECES."]} lineClass="text-[clamp(3rem,10vw,8rem)] text-[#121212]" />
-            <MaskedLines delay={0.2} lines={["THAT'S IT."]} lineClass="text-[clamp(1.8rem,5.5vw,4.5rem)] text-[#1E3A2B]" />
+            <MaskedLines lines={["50 PIECES."]} lineClass="text-[clamp(2.2rem,7vw,5.5rem)] text-[#121212]" />
+            <MaskedLines delay={0.2} lines={["THAT'S IT."]} lineClass="text-[clamp(1.5rem,4vw,3.25rem)] text-[#1E3A2B]" />
           </h3>
         </div>
       </div>

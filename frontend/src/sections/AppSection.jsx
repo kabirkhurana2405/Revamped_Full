@@ -296,7 +296,7 @@ export default function AppSection({ onGetApp }) {
               <h2 className="mt-6 font-display font-extrabold uppercase leading-[0.9] tracking-tight">
                 <MaskedLines
                   lines={["YOUR CLOSET.", "YOUR CYCLE.", "YOUR IMPACT."]}
-                  lineClass="text-[clamp(2.2rem,5.5vw,5.2rem)]"
+                  lineClass="text-[clamp(1.9rem,4.2vw,4rem)]"
                 />
               </h2>
               <Reveal delay={0.15} className="mt-5 max-w-md">
@@ -310,7 +310,7 @@ export default function AppSection({ onGetApp }) {
                   <motion.p
                     key={idx}
                     data-testid="app-step-word"
-                    className="font-display text-6xl font-extrabold uppercase tracking-tight text-transparent lg:text-7xl"
+                    className="font-display text-5xl font-extrabold uppercase tracking-tight text-transparent lg:text-6xl"
                     style={{ WebkitTextStroke: "1.5px rgba(245,243,239,0.55)" }}
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -333,7 +333,7 @@ export default function AppSection({ onGetApp }) {
         <h3 className="font-display font-extrabold uppercase leading-[0.92] tracking-tight">
           <MaskedLines
             lines={["THE CYCLE IS", "GOING MOBILE."]}
-            lineClass="text-[clamp(2.4rem,7vw,6rem)]"
+            lineClass="text-[clamp(2rem,5vw,4.5rem)]"
           />
         </h3>
         <Reveal delay={0.15} className="mx-auto mt-6 max-w-md">

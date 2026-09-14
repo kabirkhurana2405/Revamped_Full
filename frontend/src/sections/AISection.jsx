@@ -25,7 +25,7 @@ export default function AISection() {
           <h2 className="mt-8 font-display font-extrabold uppercase leading-[0.9] tracking-tight">
             <MaskedLines
               lines={["SCANNED.", "ASSESSED.", "SORTED."]}
-              lineClass="text-[clamp(2.2rem,4.6vw,4.6rem)] text-[#121212]"
+              lineClass="text-[clamp(2rem,4vw,3.8rem)] text-[#121212]"
             />
           </h2>
           <Reveal delay={0.15} className="mt-6 max-w-md">

@@ -14,7 +14,7 @@ export default function Marquee() {
         {[...ITEMS, ...ITEMS].map((t, i) => (
           <span key={i} className="flex items-center gap-10">
             <span
-              className={`font-display text-3xl font-bold uppercase tracking-tight md:text-5xl ${
+              className={`font-display text-2xl font-bold uppercase tracking-tight md:text-4xl ${
                 i % 2 ? "text-transparent" : "text-[#121212]"
               }`}
               style={i % 2 ? { WebkitTextStroke: "1.2px #121212" } : undefined}

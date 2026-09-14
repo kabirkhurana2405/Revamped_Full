@@ -109,13 +109,13 @@ export default function Hero({ onExplore, onGetApp }) {
               mount
               delay={0.35}
               lines={["STYLE.", "CYCLE."]}
-              lineClass="text-[clamp(2.9rem,11.5vw,10.5rem)] text-[#121212]"
+              lineClass="text-[clamp(2.4rem,8.5vw,7.5rem)] text-[#121212]"
             />
             <MaskedLines
               mount
               delay={0.61}
               lines={["IMPACT."]}
-              lineClass="text-[clamp(2.9rem,11.5vw,10.5rem)] text-[#1E3A2B]"
+              lineClass="text-[clamp(2.4rem,8.5vw,7.5rem)] text-[#1E3A2B]"
             />
           </h1>
           <motion.p

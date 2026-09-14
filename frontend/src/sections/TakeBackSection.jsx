@@ -157,7 +157,7 @@ export default function TakeBackSection() {
         <h2 className="mt-8 font-display font-extrabold uppercase leading-[0.9] tracking-tight">
           <MaskedLines
             lines={["BUY.", "WEAR.", "BRING IT BACK."]}
-            lineClass="text-[clamp(2.8rem,8vw,7.5rem)] text-[#121212]"
+            lineClass="text-[clamp(2.2rem,6vw,5.5rem)] text-[#121212]"
           />
         </h2>
         <Reveal delay={0.15} className="mt-6">

@@ -27,7 +27,7 @@ export default function StyleSection() {
         <div>
           <Chapter num="02" label="STYLE" />
           <h2 className="mt-6 font-display font-extrabold uppercase leading-[0.9] tracking-tight">
-            <MaskedLines lines={["STYLE"]} lineClass="text-[clamp(3.5rem,9vw,8rem)] text-[#121212]" />
+            <MaskedLines lines={["STYLE"]} lineClass="text-[clamp(2.6rem,6.5vw,5.5rem)] text-[#121212]" />
           </h2>
           <Reveal delay={0.15} className="mt-6">
             <p className="font-mono2 text-xs tracking-[0.3em] text-[#1E3A2B]">WE START WITH THE CLOTHES.</p>
