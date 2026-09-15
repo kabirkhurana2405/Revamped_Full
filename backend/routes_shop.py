@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request, HTTPException
 from pydantic import BaseModel, EmailStr
 
 from db import db, pub
-from security import get_current_user
+from security import get_current_user, get_optional_user
 
 router = APIRouter(prefix="/api", tags=["shop"])
 
@@ -115,7 +115,7 @@ class OrderIn(BaseModel):
 
 @router.post("/orders")
 async def create_order(payload: OrderIn, request: Request):
-    user = await get_current_user(request, db)
+    user = await get_optional_user(request, db)
     if not payload.items:
         raise HTTPException(status_code=400, detail="Cart is empty")
 
@@ -179,10 +179,13 @@ async def create_order(payload: OrderIn, request: Request):
     )
     order_number = f"RV-{counter['seq']:06d}"
 
+    customer = payload.customer.model_dump()
+    customer["email"] = customer["email"].strip().lower()
     order = {
         "order_number": order_number,
-        "user_id": user["id"],
-        "customer": payload.customer.model_dump(),
+        "user_id": user["id"] if user else None,
+        "guest": user is None,
+        "customer": customer,
         "address": payload.address.model_dump(),
         "items": items,
         "subtotal": subtotal,
@@ -214,11 +217,15 @@ async def my_orders(request: Request):
 
 
 @router.get("/orders/{order_number}")
-async def get_order(order_number: str, request: Request):
-    user = await get_current_user(request, db)
+async def get_order(order_number: str, request: Request, email: str = ""):
+    user = await get_optional_user(request, db)
     doc = await db.orders.find_one({"order_number": order_number})
     if not doc:
         raise HTTPException(status_code=404, detail="Order not found")
-    if doc.get("user_id") != user["id"] and user.get("role") != "admin":
-        raise HTTPException(status_code=403, detail="Not your order")
-    return pub(doc)
+    if user and (doc.get("user_id") == user["id"] or user.get("role") == "admin"):
+        return pub(doc)
+    if doc.get("guest") and email and doc.get("customer", {}).get("email", "").lower() == email.strip().lower():
+        return pub(doc)
+    if doc.get("guest") and not user:
+        raise HTTPException(status_code=401, detail="Log in or pass the checkout email to view this order")
+    raise HTTPException(status_code=403, detail="Not your order")

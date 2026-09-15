@@ -35,6 +35,15 @@ def sanitize(doc):
     return doc
 
 
+async def _claim_guest_orders(email: str, user_id: str) -> int:
+    """Attach guest orders placed with this email to the newly-authenticated account."""
+    res = await db.orders.update_many(
+        {"guest": True, "user_id": None, "customer.email": email},
+        {"$set": {"user_id": user_id, "claimed_at": datetime.now(timezone.utc).isoformat()}},
+    )
+    return res.modified_count
+
+
 async def _check_lockout(identifier: str):
     rec = await db.login_attempts.find_one({"identifier": identifier})
     if rec and rec.get("count", 0) >= 5:
@@ -75,7 +84,9 @@ async def register(payload: RegisterIn, response: Response):
     }
     res = await db.users.insert_one(doc)
     set_auth_cookies(response, str(res.inserted_id), email, "customer")
-    return sanitize({**doc, "_id": res.inserted_id})
+    out = sanitize({**doc, "_id": res.inserted_id})
+    out["claimed_orders"] = await _claim_guest_orders(email, str(res.inserted_id))
+    return out
 
 
 @router.post("/login")
@@ -89,7 +100,9 @@ async def login(payload: LoginIn, request: Request, response: Response):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     await db.login_attempts.delete_one({"identifier": identifier})
     set_auth_cookies(response, str(user["_id"]), email, user.get("role", "customer"))
-    return sanitize(user)
+    out = sanitize(user)
+    out["claimed_orders"] = await _claim_guest_orders(email, str(user["_id"]))
+    return out
 
 
 @router.post("/logout")

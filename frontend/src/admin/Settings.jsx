@@ -78,9 +78,9 @@ export default function Settings() {
       <div className="mt-6 rounded-2xl border border-[#121212]/10 bg-white p-6">
         <p className="font-mono2 text-[9px] tracking-[0.3em] text-[#1E3A2B]">AI PROVIDER</p>
         <p className="mt-2 text-sm text-[#121212]/60">
-          Current provider: <span className="font-mono2 text-[11px]">MOCK (demo)</span>. Set <code>AI_PROVIDER</code> in
-          the backend environment and implement the provider interface in <code>ai_provider.py</code> to connect a real
-          vision service. All demo results are labelled.
+          Current provider: <span className="font-mono2 text-[11px]">GEMINI (gemini-3-flash-preview)</span> — live
+          vision assessment of customer photos. AI recommends; your team confirms the final path. Failed or
+          low-confidence assessments are flagged NEEDS HUMAN REVIEW instead of blocking the customer.
         </p>
       </div>
 

@@ -426,6 +426,7 @@ async def ai_metrics(request: Request):
         "human_decisions": decided,
         "overrides": decided - agree,
         "agreement_rate": round(agree / decided * 100, 1) if decided else None,
+        "needs_review": sum(1 for s in subs if (s.get("ai") or {}).get("needs_review")),
     }
 
 

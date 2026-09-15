@@ -17,14 +17,15 @@ export default function Assessments() {
     <div data-testid="admin-assessments">
       <h1 className="font-display text-2xl font-extrabold tracking-tight md:text-3xl">AI ASSESSMENTS</h1>
       <p className="mt-1 font-mono2 text-[9px] tracking-[0.25em] text-[#121212]/50">
-        MOCK PROVIDER ACTIVE — RESULTS ARE LABELLED AI DEMO UNTIL A REAL VISION SERVICE IS CONNECTED.
+        GEMINI VISION LIVE — AI RECOMMENDS, YOUR TEAM CONFIRMS. LOW-CONFIDENCE READS ARE FLAGGED FOR REVIEW.
       </p>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-5">
+      <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-6">
         <Card testId="ai-total" label="ASSESSMENTS" value={metrics.assessments} />
         <Card testId="ai-rewear" label="REWEAR RECOMMENDED" value={metrics.recommendations.REWEAR} />
         <Card testId="ai-revamp" label="REVAMP RECOMMENDED" value={metrics.recommendations.REVAMP} />
         <Card testId="ai-recycle" label="RECYCLE RECOMMENDED" value={metrics.recommendations.RECYCLE} />
+        <Card testId="ai-needs-review" label="NEEDS REVIEW" value={metrics.needs_review ?? 0} />
         <Card
           testId="ai-agreement"
           label="AI AGREEMENT RATE"
@@ -39,8 +40,13 @@ export default function Assessments() {
           <div key={t.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#121212]/8 bg-white px-4 py-3">
             <span className="font-mono2 text-[10px] font-bold">{t.label}</span>
             <span className="font-mono2 text-[10px] text-[#121212]/60">{t.garment_type}</span>
-            <span className="font-mono2 text-[10px]">SCORE {t.ai.conditionScore}</span>
-            <span className="font-mono2 text-[10px] text-[#1E3A2B]">AI: {t.ai.recommendedPath}</span>
+            <span className="font-mono2 text-[10px]">SCORE {t.ai.conditionScore ?? "—"}</span>
+            <span className="font-mono2 text-[10px] text-[#1E3A2B]">AI: {t.ai.recommendedPath || "—"}</span>
+            {t.ai.needs_review && (
+              <span className="rounded-full bg-red-100 px-2.5 py-0.5 font-mono2 text-[8px] tracking-[0.15em] text-red-800">
+                NEEDS REVIEW
+              </span>
+            )}
             <span className="font-mono2 text-[10px]">
               FINAL: <b className={t.final_path ? "text-[#1E3A2B]" : "text-[#121212]/40"}>{t.final_path || "PENDING"}</b>
             </span>

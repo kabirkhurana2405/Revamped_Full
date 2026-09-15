@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import ShopShell from "../components/ShopShell";
@@ -22,9 +22,9 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const [placing, setPlacing] = useState(false);
   const [form, setForm] = useState({
-    name: user?.name || "",
-    phone: user?.phone || "",
-    email: user?.email || "",
+    name: "",
+    phone: "",
+    email: "",
     line1: "",
     line2: "",
     city: "",
@@ -32,10 +32,15 @@ export default function CheckoutPage() {
     pincode: "",
   });
 
-  if (user === false) {
-    navigate("/login?next=/checkout");
-    return null;
-  }
+  useEffect(() => {
+    if (user)
+      setForm((f) => ({
+        ...f,
+        name: f.name || user.name || "",
+        phone: f.phone || user.phone || "",
+        email: f.email || user.email || "",
+      }));
+  }, [user]);
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -57,7 +62,8 @@ export default function CheckoutPage() {
         takeback_garments: takeback,
       });
       clear();
-      navigate(`/order/${data.order_number}`);
+      sessionStorage.setItem(`rv_order_${data.order_number}`, form.email.trim().toLowerCase());
+      navigate(`/order/${data.order_number}`, { state: { order: data } });
     } catch (e) {
       toast.error(apiError(e, "Could not place order"));
     } finally {
@@ -77,6 +83,15 @@ export default function CheckoutPage() {
               <Field label="PHONE *" data-testid="checkout-phone" value={form.phone} onChange={set("phone")} />
               <Field label="EMAIL *" data-testid="checkout-email" type="email" value={form.email} onChange={set("email")} />
             </div>
+            {user === false && (
+              <p
+                data-testid="guest-checkout-note"
+                className="mt-4 rounded-xl border border-[#1E3A2B]/25 bg-[#1E3A2B]/5 px-4 py-3 font-mono2 text-[9px] leading-relaxed tracking-[0.18em] text-[#1E3A2B]"
+              >
+                CHECKING OUT AS GUEST — CREATE AN ACCOUNT LATER WITH THE SAME EMAIL AND THIS ORDER JOINS YOUR ACCOUNT
+                AUTOMATICALLY.
+              </p>
+            )}
           </section>
           <section>
             <p className="font-mono2 text-[10px] tracking-[0.3em] text-[#1E3A2B]">02 — DELIVERY</p>

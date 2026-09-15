@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { toast } from "sonner";
 import ShopShell from "../components/ShopShell";
 import { LogoMark } from "../components/Logo";
 import { useAuth } from "../context/AuthContext";
@@ -19,8 +20,14 @@ export default function LoginPage() {
     setError("");
     setBusy(true);
     try {
-      if (mode === "login") await login(form.email, form.password);
-      else await register(form.name, form.email, form.password);
+      const data =
+        mode === "login"
+          ? await login(form.email, form.password)
+          : await register(form.name, form.email, form.password);
+      if (data?.claimed_orders > 0)
+        toast.success(
+          `${data.claimed_orders} past guest order${data.claimed_orders > 1 ? "s" : ""} added to your account`
+        );
       navigate(params.get("next") || "/account");
     } catch (err) {
       setError(apiError(err, "Authentication failed"));

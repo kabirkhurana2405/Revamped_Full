@@ -4,11 +4,9 @@ import { Trash2, Minus, Plus, Bookmark } from "lucide-react";
 import ShopShell from "../components/ShopShell";
 import { fileUrl, inr } from "../lib/api";
 import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
 
 export default function CartPage() {
   const { items, setQty, remove, add, subtotal, takeback, setTakeback, takebackPercent, discount } = useCart();
-  const { user } = useAuth();
   const navigate = useNavigate();
   const [saved, setSaved] = useState(() => {
     try {
@@ -32,10 +30,7 @@ export default function CartPage() {
     add({ id: item.product_id, slug: item.slug, name: item.name, price: item.price, images: [item.image] }, item.size, item.qty);
   };
 
-  const checkout = () => {
-    if (!user) navigate("/login?next=/checkout");
-    else navigate("/checkout");
-  };
+  const checkout = () => navigate("/checkout");
 
   return (
     <ShopShell>

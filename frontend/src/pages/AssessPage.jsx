@@ -76,7 +76,8 @@ export default function AssessPage() {
 
   const rows = result
     ? [
-        ["CONDITION SCORE", `${result.conditionScore} / 100`],
+        ["CONDITION SCORE", result.conditionScore != null ? `${result.conditionScore} / 100` : "—"],
+        ["AI CONFIDENCE", `${Math.round((result.confidence ?? 0) * 100)}%`],
         ["WEAR", result.wear?.replace("_", " ").toUpperCase()],
         ["STAINS", result.stains?.replace("_", " ").toUpperCase()],
         ["TEARS / DAMAGE", result.damage?.toUpperCase()],
@@ -215,22 +216,35 @@ export default function AssessPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-[#E23B3B]" />
               <span className="font-mono2 text-[9px] tracking-[0.25em] text-[#F5F3EF]">{result.label}</span>
             </div>
-            <div className="mt-5 overflow-hidden rounded-3xl border border-[#121212]/10 bg-white/60">
-              {rows.map(([k, v], i) => (
-                <div key={k} className={`flex items-center justify-between px-6 py-4 ${i > 0 ? "border-t border-[#121212]/8" : ""}`}>
-                  <span className="font-mono2 text-[10px] tracking-[0.22em] text-[#121212]/55">{k}</span>
-                  <span className="font-mono2 text-[11px] tracking-[0.15em] text-[#121212]">{v}</span>
-                </div>
-              ))}
-              <div className="flex items-center justify-between bg-[#1E3A2B] px-6 py-5">
-                <span className="font-mono2 text-[10px] tracking-[0.25em] text-[#F5F3EF]/70">RECOMMENDED PATH</span>
-                <span data-testid="recommended-path" className="font-display text-xl font-extrabold text-[#F5F3EF]">
-                  {result.recommendedPath}
-                </span>
+            {result.needs_review ? (
+              <div
+                data-testid="assess-needs-review"
+                className="mt-5 rounded-3xl border border-dashed border-[#E23B3B]/40 bg-white/60 p-7 text-center"
+              >
+                <p className="font-display text-xl font-extrabold">OUR TEAM TAKES IT FROM HERE.</p>
+                <p className="mt-2 text-sm leading-relaxed text-[#121212]/60">
+                  The AI couldn&apos;t read these photos confidently, so instead of guessing, your garment is flagged
+                  for a manual review. The Revamped team will confirm the path — your garment is already in the loop.
+                </p>
               </div>
-            </div>
+            ) : (
+              <div className="mt-5 overflow-hidden rounded-3xl border border-[#121212]/10 bg-white/60">
+                {rows.map(([k, v], i) => (
+                  <div key={k} className={`flex items-center justify-between px-6 py-4 ${i > 0 ? "border-t border-[#121212]/8" : ""}`}>
+                    <span className="font-mono2 text-[10px] tracking-[0.22em] text-[#121212]/55">{k}</span>
+                    <span className="font-mono2 text-[11px] tracking-[0.15em] text-[#121212]">{v}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between bg-[#1E3A2B] px-6 py-5">
+                  <span className="font-mono2 text-[10px] tracking-[0.25em] text-[#F5F3EF]/70">RECOMMENDED PATH</span>
+                  <span data-testid="recommended-path" className="font-display text-xl font-extrabold text-[#F5F3EF]">
+                    {result.recommendedPath}
+                  </span>
+                </div>
+              </div>
+            )}
             <p className="mt-4 text-center font-mono2 text-[9px] leading-relaxed tracking-[0.15em] text-[#121212]/45">
-              DEMO ASSESSMENT — A REAL AI VISION SERVICE PLUGS INTO /api/ai/assess-garment LATER.
+              POWERED BY GEMINI VISION — REAL PHOTO ANALYSIS.
               <br />
               THE REVAMPED TEAM CONFIRMS THE FINAL PATH. AI RECOMMENDATION ≠ FINAL DECISION.
             </p>

@@ -68,7 +68,17 @@ export default function TakeBacks() {
                   <td>{t.customer_name || t.customer_email}</td>
                   <td className="font-mono2 text-[10px]">{t.garment_type} {t.brand ? `· ${t.brand}` : ""}</td>
                   <td className="font-mono2 text-[10px] text-[#121212]/60">
-                    {t.ai ? `${t.ai.recommendedPath} (${t.ai.conditionScore})` : "NOT RUN"}
+                    {t.ai ? (
+                      t.ai.needs_review ? (
+                        <span data-testid={`needs-review-${t.label}`} className="font-bold text-red-700">
+                          NEEDS REVIEW
+                        </span>
+                      ) : (
+                        `${t.ai.recommendedPath} (${t.ai.conditionScore})`
+                      )
+                    ) : (
+                      "NOT RUN"
+                    )}
                   </td>
                   <td className="font-mono2 text-[10px] font-bold text-[#1E3A2B]">{t.final_path || "—"}</td>
                   <td>
@@ -125,6 +135,15 @@ export default function TakeBacks() {
             ) : (
               <p className="mt-5 rounded-xl border border-dashed border-[#121212]/20 p-4 font-mono2 text-[10px] tracking-[0.2em] text-[#121212]/45">
                 AI ASSESSMENT NOT RUN YET.
+              </p>
+            )}
+
+            {open.ai?.needs_review && (
+              <p
+                data-testid="takeback-needs-review"
+                className="mt-3 rounded-xl bg-red-50 px-4 py-3 font-mono2 text-[9px] leading-relaxed tracking-[0.15em] text-red-800"
+              >
+                AI FLAGGED THIS FOR HUMAN REVIEW{open.ai.notes ? ` — ${open.ai.notes}` : ""}
               </p>
             )}
 

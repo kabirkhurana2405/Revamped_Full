@@ -93,6 +93,13 @@ async def get_current_user(request: Request, db) -> dict:
     return user
 
 
+async def get_optional_user(request: Request, db) -> dict | None:
+    try:
+        return await get_current_user(request, db)
+    except HTTPException:
+        return None
+
+
 async def require_admin(request: Request, db) -> dict:
     user = await get_current_user(request, db)
     if user.get("role") != "admin":

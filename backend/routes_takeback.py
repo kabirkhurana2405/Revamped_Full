@@ -105,17 +105,23 @@ async def assess(payload: AssessIn, request: Request):
     if not sub or sub.get("user_id") != user["id"]:
         raise HTTPException(status_code=404, detail="Submission not found")
     result = await assess_garment(sub.get("images", []), sub.get("brand", ""), sub.get("garment_type", ""))
+    needs_review = bool(result.get("needs_review"))
     await db.takebacks.update_one(
         {"_id": ObjectId(payload.submission_id)},
         {
             "$set": {
                 "ai": result,
-                "status": "AI_ASSESSED",
+                "status": "UNDER_REVIEW" if needs_review else "AI_ASSESSED",
                 "updated_at": datetime.now(timezone.utc).isoformat(),
             }
         },
     )
-    await _add_event(payload.submission_id, user["id"], "AI CONDITION CHECK", "AI-assisted condition assessment")
+    await _add_event(
+        payload.submission_id,
+        user["id"],
+        "AI CONDITION CHECK",
+        "AI unsure — flagged for human review" if needs_review else "AI-assisted condition assessment",
+    )
     await _add_event(payload.submission_id, user["id"], "ASSESSED", result.get("label", ""))
     return result
 
