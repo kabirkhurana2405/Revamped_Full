@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { api, inr, apiError } from "../lib/api";
 import { Empty } from "./Dashboard";
@@ -48,9 +48,8 @@ export default function Orders() {
             </thead>
             <tbody>
               {orders.map((o) => (
-                <>
+                <Fragment key={o.id}>
                   <tr
-                    key={o.id}
                     data-testid={`order-row-${o.order_number}`}
                     onClick={() => {
                       setOpen(open?.id === o.id ? null : o);
@@ -132,7 +131,7 @@ export default function Orders() {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>

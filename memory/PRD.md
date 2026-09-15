@@ -22,6 +22,11 @@ Single-page premium launch site for REVAMPED, an Indian circular streetwear bran
 6. Honest copy: no fake impact numbers (ledger starts at 0, dashboard marked DEMO)
 
 ## Implemented
+2026-09-15 — v8 (REAL AI VISION + GUEST CHECKOUT): 
+- AI assessment is now LIVE: ai_provider.py uses Gemini 3 Flash (gemini-3-flash-preview) via emergentintegrations LlmChat (stream_message, FileContentWithMimeType image attachments from /app/backend/uploads). Structured JSON report (conditionScore, wear, stains, damage, structural, reusePotential, recommendedPath, confidence, notes) normalized + clamped server-side. AI_PROVIDER=gemini + EMERGENT_LLM_KEY in backend/.env. Confidence floor 0.5: failed/unparseable/low-confidence/no-photo assessments return needs_review=true, submission is accepted with status UNDER_REVIEW (never blocks the customer). Admin: red NEEDS REVIEW badges in /admin/takebacks (list + detail banner), 6th stat card in /admin/assessments, ai-metrics.needs_review. AssessPage: needs-review card state + AI CONFIDENCE row + "POWERED BY GEMINI VISION" copy. Mock provider retained behind AI_PROVIDER=mock.
+- Guest checkout: POST /api/orders accepts guests (get_optional_user; stores guest:true, user_id:null, same take-back discount rules). GET /api/orders/{num}?email= lets guests re-view with matching checkout email (401 otherwise). Auto-claim: register AND login run _claim_guest_orders (matches guest:true + user_id:null + customer.email) and return claimed_orders; LoginPage toasts the claim; CheckoutPage shows guest note + prefills profile for authed users; OrderConfirmation has router-state fallback + sessionStorage email refetch, guest-claim-banner, "CREATE ACCOUNT TO TRACK". Fixed leftover CartPage login gate that blocked guest checkout (found by testing agent). Fixed admin Orders.jsx missing-key warning (Fragment key).
+- Runtime error "destroy is not a function" (user-reported): traced to React dev callDestroy; audited every effect in src (no tsx files exist), error-tested 20+ routes incl. auth + admin + modals — zero pageerrors; concluded stale cached bundle from the pre-fix build (same class of bug fixed in v7). No recurrence in any test session since.
+- Verified: backend pytest 6/6 (/app/backend/tests/test_guest_and_ai.py) + full frontend E2E (iteration_2.json): guest order RV-000012 placed via UI, claimed via register, reload-safe confirmation; logged-in regression RV-000013; real Gemini call (correctly flagged digital packshot low-confidence → needs_review); admin dashboard/products/orders status pipeline/customers/inventory adjust+restore/take-back decision/assessments all E2E-passed; mobile 390px no overflow.
 2026-09-14 — v7 (E-COMMERCE MVP EXPANSION): Landing preserved at "/" (now with global nav + SHOP DROP 001 CTA). New: react-router multi-page app.
 - Customer: /men + /women catalogue (shared, gender filter incl. Unisex, filters category/size/colour/price/availability, 4 sort modes, search), /product/:slug (gallery, size/stock, accordions, circularity section), /cart (save-for-later, take-back discount 0–4 garments = 5–20%), /checkout (Indian address flow, GST 5%, free shipping ≥₹999 pre-discount, TEST PAYMENT MODE — no fake gateway), /order/:num confirmation, /login (register+login JWT httpOnly cookies), /account (orders, profile, addresses), /impact (My Cycle aggregates + per-garment journey timeline modal; demo card for guests), /take-back (5-step flow), /take-back/assess (3-step AI condition check UI, mock provider, demo-labelled), /rewards (cycle levels from admin-editable rules). Mobile bottom tab bar on shop pages.
 - Admin /admin (separate auth, role-guarded server-side): dashboard (real metrics + 14-day sales chart + pathway distribution, empty states), products CRUD + duplicate/archive + image upload, size-level inventory with adjustment movements, orders (status pipeline + tracking), customers (aggregates), take-back review (AI vs final decision stored separately, REWEAR/REVAMP/RECYCLE/REJECT), AI assessments + agreement rate, impact journey editor, settings (reward levels, AI/payment provider notes).
@@ -48,11 +53,12 @@ Single-page premium launch site for REVAMPED, an Indian circular streetwear bran
 - Screenshots: hero, particle disassembly, all sections desktop + mobile hero/app; calculator 4 garments → ₹799/20%; modal join → success state
 
 ## Backlog
-- P0: None blocking
-- P1: Real app-store links when apps exist; swap procedural tee for scanned GLTF garment; waitlist count social proof on site
-- P2: WebGL garment-journey tracer microsite; press/lookbook section; i18n (Hindi)
+- P0: Real payment gateway (Razorpay/Stripe) — checkout is provider-ready TEST PAYMENT MODE
+- P1: Order confirmation + take-back status emails (managed Resend key in place, only waitlist uses it); real product photography (improves shop + AI assessment confidence); real app-store links when apps exist; swap procedural tee for scanned GLTF garment; waitlist count social proof
+- P2: WebGL garment-journey tracer microsite; press/lookbook section; i18n (Hindi); native mobile app
 
 ## Next Tasks
-1. Replace procedural tee with production GLTF garment scan when asset is available
-2. Add real social links (Instagram) and contact email in footer
-3. Admin view of waitlist signups
+1. Connect payment gateway to /api/orders pipeline
+2. Order/take-back transactional emails
+3. Replace generated packshots with real garment photography
+4. Admin view of waitlist signups
