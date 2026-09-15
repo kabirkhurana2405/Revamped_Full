@@ -3,12 +3,13 @@ import uuid
 from pathlib import Path
 from datetime import datetime, timezone
 from bson import ObjectId
-from fastapi import APIRouter, Request, HTTPException, UploadFile, File
+from fastapi import APIRouter, Request, HTTPException, UploadFile, File, Response
 from pydantic import BaseModel
 
 from db import db, pub, pubs
 from security import get_current_user
 from ai_provider import assess_garment
+from share_card import render_impact_card
 
 router = APIRouter(prefix="/api", tags=["takeback"])
 
@@ -149,6 +150,23 @@ async def get_takeback(tid: str, request: Request):
     out["journey"] = pubs(events)
     out["label"] = f"RV-TB-{tid[-6:].upper()}"
     return out
+
+
+@router.get("/impact/share/{tid}")
+async def impact_share_card(tid: str, request: Request):
+    user = await get_current_user(request, db)
+    try:
+        sub = await db.takebacks.find_one({"_id": ObjectId(tid)})
+    except Exception:
+        sub = None
+    if not sub:
+        raise HTTPException(status_code=404, detail="Submission not found")
+    if sub.get("user_id") != user["id"] and user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Not your submission")
+    events = await db.impact_events.find({"takeback_id": tid}).sort("ts", 1).to_list(20)
+    contributed = await db.takebacks.count_documents({"user_id": sub["user_id"], "status": {"$ne": "REJECTED"}})
+    png = render_impact_card(sub, events, contributed)
+    return Response(content=png, media_type="image/png", headers={"Cache-Control": "no-store"})
 
 
 @router.get("/impact/my")

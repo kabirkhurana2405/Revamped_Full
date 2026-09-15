@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import ShopShell from "../components/ShopShell";
 import { api, fileUrl } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
@@ -7,9 +8,35 @@ import { MaskedLines, Reveal } from "../components/primitives";
 
 function JourneyModal({ id, onClose }) {
   const [data, setData] = useState(null);
+  const [sharing, setSharing] = useState(false);
   useEffect(() => {
     api.get(`/takeback/${id}`).then((r) => setData(r.data)).catch(() => {});
   }, [id]);
+
+  const shareCard = async () => {
+    setSharing(true);
+    try {
+      const r = await api.get(`/impact/share/${id}`, { responseType: "blob" });
+      const file = new File([r.data], `revamped-impact-${data.label}.png`, { type: "image/png" });
+      const caption = `My ${data.garment_type} just got a new life with REVAMPED — STYLE. CYCLE. IMPACT. Join the cycle.`;
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: "REVAMPED — my impact", text: caption });
+      } else {
+        const url = URL.createObjectURL(file);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file.name;
+        a.click();
+        URL.revokeObjectURL(url);
+        toast.success("Impact card downloaded — ready to post");
+      }
+    } catch (e) {
+      if (e?.name !== "AbortError") toast.error("Could not build the share card");
+    } finally {
+      setSharing(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center px-5" onClick={onClose}>
       <div className="absolute inset-0 bg-[#121212]/60 backdrop-blur-sm" />
@@ -55,9 +82,17 @@ function JourneyModal({ id, onClose }) {
               ))}
             </div>
             <button
+              data-testid="journey-share-btn"
+              onClick={shareCard}
+              disabled={sharing}
+              className="mt-6 w-full rounded-full bg-[#1E3A2B] py-3.5 font-mono2 text-[10px] tracking-[0.3em] text-[#F5F3EF] transition-colors hover:bg-[#121212] disabled:opacity-60"
+            >
+              {sharing ? "BUILDING CARD…" : "SHARE THIS JOURNEY ↗"}
+            </button>
+            <button
               data-testid="journey-close"
               onClick={onClose}
-              className="mt-4 w-full rounded-full bg-[#121212] py-3.5 font-mono2 text-[10px] tracking-[0.3em] text-[#F5F3EF]"
+              className="mt-3 w-full rounded-full bg-[#121212] py-3.5 font-mono2 text-[10px] tracking-[0.3em] text-[#F5F3EF]"
             >
               CLOSE
             </button>

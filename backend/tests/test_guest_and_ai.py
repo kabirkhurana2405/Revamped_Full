@@ -161,3 +161,38 @@ class TestLoggedInOrder:
         r2 = s.get(f"{API}/orders/my")
         assert r2.status_code == 200
         assert o["order_number"] in [x["order_number"] for x in r2.json()["orders"]]
+
+
+# ---------- Impact share card ----------
+class TestImpactShareCard:
+    def _login(self, email, password):
+        s = requests.Session()
+        r = s.post(f"{API}/auth/login", json={"email": email, "password": password})
+        assert r.status_code == 200, r.text
+        return s
+
+    def _demo_takeback(self, s):
+        r = s.get(f"{API}/takeback/my")
+        r.raise_for_status()
+        subs = r.json()["submissions"]
+        if not subs:
+            pytest.skip("Demo user has no take-back submissions")
+        return subs[0]["id"]
+
+    def test_owner_gets_png_card(self):
+        s = self._login(DEMO_EMAIL, DEMO_PASS)
+        tid = self._demo_takeback(s)
+        r = s.get(f"{API}/impact/share/{tid}")
+        assert r.status_code == 200
+        assert r.headers["content-type"] == "image/png"
+        assert r.content[:4] == b"\x89PNG"
+        assert len(r.content) > 20000  # a real rendered card, not a stub
+
+    def test_other_user_forbidden_and_guest_unauthorized(self):
+        owner = self._login(DEMO_EMAIL, DEMO_PASS)
+        tid = self._demo_takeback(owner)
+        other = self._login("buyer@test.com", "password123")
+        r = other.get(f"{API}/impact/share/{tid}")
+        assert r.status_code in (403, 404)
+        r2 = requests.get(f"{API}/impact/share/{tid}")
+        assert r2.status_code == 401
