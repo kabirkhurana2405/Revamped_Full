@@ -1,0 +1,37 @@
+{
+  "summary": "Iteration 3 — validated the two new features (real AI-generated product photos + branded impact share cards) + regression. Backend pytest 8/8 PASS incl. TestImpactShareCard (owner 200 PNG, non-owner 403, guest 401). Frontend E2E: (1) /men catalogue renders 3 on-model editorial photos (bone/forest/charcoal tees), embroidered circular logo visible on chest, 0 broken images. (2) Product detail page /product/drop-001-tee-01-minimal shows editorial + macro detail gallery, 2 thumbnails switch OK. (3) Homepage / renders 19 images, 0 broken, 3D hero + landing intact. (4) Add-to-bag works from product page (bag count -> 1, 'Added to bag — size M' toast). (5) Impact share E2E for demo@revamped.in: /impact -> click garment-RV-TB-619332 (REVAMP path) -> journey modal opens -> journey-share-btn triggers PNG download 'revamped-impact-RV-TB-619332.png' (1080x1080 RGB PNG, 85KB), modal stays open, CLOSE works. (6) Pending garment (JEANS RV-TB-1A73CD, UNDER_REVIEW, no final_path) renders card + modal + share PNG with 'IN THE LOOP' pill, does NOT crash. (7) Mobile 390px /men and /impact -> 0 horizontal overflow, share button reachable and works. (8) ZERO pageerrors across every route tested. HOWEVER: one visual bug in the generated PNG — the big RV-TB label at top of the card is horizontally clipped (last character runs off the 1080px canvas). Confirmed on BOTH shared cards (RV-TB-619332 renders as 'RV-TB-61933' visible, RV-TB-1A73CD renders as 'RV-TB-1A73C').",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "share_card.py Pillow renderer (RV-TB label)", "issue": "Big RV-TB-XXXXXX headline label overflows the 1080px canvas — last character is clipped off the right edge. Reproduced on RV-TB-619332 (shows '...61933', missing '2') and RV-TB-1A73CD (shows '...1A73C', missing 'D'). Fixed font size doesn't measure text width or wrap. Fix: measure with font.getbbox / textlength and scale font size down (or truncate) until it fits inside the safe content width.", "selector": "/app/backend/share_card.py (RV-TB label render block)", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Impact journey modal — pending JEANS card (RV-TB-1A73CD)", "issues": ["'NEEDS HUMAN REVIEW' box shows 'Condition score ·' with an empty value and 'Recommended:' with an empty value — should either hide the row or show em-dash placeholder when values are null."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_guest_and_ai.py",
+    "/app/test_reports/pytest/iter3_results.xml",
+    "/app/test_reports/revamped-impact-RV-TB-619332.png",
+    "/app/test_reports/revamped-impact-RV-TB-1A73CD.png"
+  ],
+  "action_items": [
+    "(MEDIUM) Fix RV-TB label overflow in /app/backend/share_card.py — dynamically shrink font-size (or wrap) so the full label fits within the left/right safe margins of the 1080x1080 canvas. Currently the last character of every RV-TB-XXXXXX label is clipped off the canvas.",
+    "(COSMETIC) In ImpactPage JourneyModal 'NEEDS HUMAN REVIEW' block, hide the 'Condition score ·' and 'Recommended:' lines when the values are empty."
+  ],
+  "critical_code_review_comments": [
+    "AI-generated product photos are on-brand and correctly show the embroidered circular Revamped logo on the model's chest for all 3 tees. Image endpoint /api/files/prod_*.jpg all return 200 with proper JPEG bytes.",
+    "Share endpoint auth model is correct: 200 for owner, 403 for other user, 401 for guest — verified both via pytest and via UI.",
+    "Frontend blob download fallback works cleanly on desktop; toast is present in code but did not visibly appear during test (download event did fire and file saved correctly).",
+    "Pending-garment share card renders 'IN THE LOOP' pill without crashing — good defensive fallback."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (8/8)", "frontend": "~92% (share card content has clipped label bug; everything else works)"},
+  "test_credentials": "demo@revamped.in / Revamped@Demo2026 ; admin@revamped.in / Revamped@Admin2026 ; buyer@test.com / password123",
+  "seed_data_creation": "None net-new. Demo user takebacks used: RV-TB-619332 (REVAMP), RV-TB-1A73CD (UNDER_REVIEW), RV-TB-1A73C9 (REWEAR), RV-TB-E01E67 (REWEAR).",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Two features validated end-to-end: real product photos + impact share card. Only remaining bug is horizontal clipping of the big RV-TB label on the generated PNG in /app/backend/share_card.py — reduce or auto-fit the font size for that label. All auth/security paths for the share endpoint verified. Zero pageerrors seen anywhere; the user-reported 'errors' remain unreproducible in a fresh session (consistent with stale-JS hypothesis).",
+  "rca of the issue": "Share card RV-TB label clipping: share_card.py uses a fixed font size for the big RV-TB-XXXXXX heading (~150-180pt Syne-ExtraBold) without measuring against a safe max-width. A 12-char string 'RV-TB-XXXXXX' at that size exceeds ~1080-2*margin px, so Pillow draws it and the last glyph gets cropped by the canvas boundary. Fix: use font.getbbox() on the target string, compute scale = safe_width / measured_width, and clamp font size = int(base_size * min(1.0, scale)) before rendering. Alternatively wrap the label onto a second line if width > safe_width."
+}

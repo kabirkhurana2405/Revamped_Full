@@ -57,9 +57,13 @@ function JourneyModal({ id, onClose }) {
             {data.ai && (
               <div className="mt-5 rounded-2xl border border-[#121212]/10 bg-white/60 p-4">
                 <p className="font-mono2 text-[8px] tracking-[0.25em] text-[#121212]/50">{data.ai.label}</p>
-                <p className="mt-1 text-sm">
-                  Condition score <b>{data.ai.conditionScore}</b> · Recommended: <b>{data.ai.recommendedPath}</b>
-                </p>
+                {data.ai.conditionScore != null ? (
+                  <p className="mt-1 text-sm">
+                    Condition score <b>{data.ai.conditionScore}</b> · Recommended: <b>{data.ai.recommendedPath}</b>
+                  </p>
+                ) : (
+                  <p className="mt-1 text-sm text-[#121212]/60">Our team is reviewing this garment manually.</p>
+                )}
                 {data.final_path && (
                   <p className="mt-1 font-mono2 text-[9px] tracking-[0.2em] text-[#1E3A2B]">FINAL DECISION: {data.final_path}</p>
                 )}

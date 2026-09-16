@@ -22,6 +22,16 @@ def _tracked(text: str) -> str:
     return " ".join(text)
 
 
+def _fit_font(d: ImageDraw.ImageDraw, text: str, name: str, base: int, max_w: int) -> ImageFont.FreeTypeFont:
+    """Shrink font size until text fits max_w (prevents canvas-edge clipping)."""
+    size = base
+    font = _font(name, size)
+    while size > 40 and d.textlength(text, font=font) > max_w:
+        size -= 4
+        font = _font(name, size)
+    return font
+
+
 def render_impact_card(sub: dict, events: list, contributed: int) -> bytes:
     W = H = 1080
     PAD = 72
@@ -37,7 +47,7 @@ def render_impact_card(sub: dict, events: list, contributed: int) -> bytes:
     # --- garment identity ---
     label = f"RV-TB-{str(sub.get('_id', ''))[-6:].upper()}"
     d.text((PAD, 252), _tracked("GARMENT JOURNEY"), font=_font("SpaceMono-Regular.ttf", 24), fill=FOREST)
-    d.text((PAD - 6, 292), label, font=_font("Syne-ExtraBold.ttf", 96), fill=CHARCOAL)
+    d.text((PAD - 6, 292), label, font=_fit_font(d, label, "Syne-ExtraBold.ttf", 96, W - 2 * PAD + 6), fill=CHARCOAL)
     garment = (sub.get("garment_type") or "GARMENT").upper()
     brand = (sub.get("brand") or "ANY BRAND").upper()
     date = (sub.get("created_at") or "")[:10]

@@ -28,6 +28,7 @@ import Assessments from "./admin/Assessments";
 import ImpactAdmin from "./admin/ImpactAdmin";
 import Settings from "./admin/Settings";
 import { Toaster } from "./components/ui/sonner";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -41,7 +42,8 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <ScrollToTop />
-          <Routes>
+          <ErrorBoundary>
+            <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/men" element={<Catalogue gender="men" />} />
             <Route path="/women" element={<Catalogue gender="women" />} />
@@ -70,7 +72,8 @@ function App() {
               <Route path="settings" element={<Settings />} />
             </Route>
             <Route path="*" element={<Catalogue gender="men" />} />
-          </Routes>
+            </Routes>
+          </ErrorBoundary>
           <Toaster position="bottom-center" />
         </CartProvider>
       </AuthProvider>
